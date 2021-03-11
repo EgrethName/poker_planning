@@ -1,5 +1,5 @@
 .idea/
 db.sqlite3
-/pp_app/__pycache__/
+pp_project/pp_app/__pycache__/
 pp_project/__pycache__/
 pp_project/pp_project/__pycache__/
