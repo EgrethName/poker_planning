@@ -1,9 +1,8 @@
 <template>
   <div id="app">
     <div class=""></div>
+    <Header />
     <div class="wrapper container">
-      <header></header>
-      <nav></nav>
       <div class="heading"></div>
         <PokerHello />
       <div class="row">
@@ -19,11 +18,13 @@
 <script>
 // @ is an alias to /src
 import PokerHello from "@/components/PokerHello.vue";
+import Header from '@/components/Header.vue';
 
 export default {
   name: "App",
   components: {
     PokerHello,
+    Header,
   },
 };
 </script>
