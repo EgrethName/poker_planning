@@ -1,29 +1,25 @@
 <template>
   <div class="poker-intro">
-    <b-button v-b-modal.modal-prevent-closing>Open Modal</b-button>
+    <b-button v-b-modal.modal-prevent-closing>Create a game</b-button>
 
-    <div class="mt-3">
+    <!-- <div class="mt-3">
       Submitted Names:
       <div v-if="submittedNames.length === 0">--</div>
       <ul v-else class="mb-0 pl-3">
         <li v-for="name in submittedNames" :key="name">{{ name }}</li>
       </ul>
-    </div>
+    </div> -->
 
     <b-modal
       id="modal-prevent-closing"
       ref="modal"
-      title="Submit Your Name"
+      title="Create a new game"
       @show="resetModal"
       @hidden="resetModal"
       @ok="handleOk"
+      ok-title="Create!"
+      cancel-variant="dark"
     >
-      <p v-if="errors.length">
-        <b>Пожалуйста исправьте указанные ошибки:</b>
-        <ul>
-          <li v-for="error in errors" :key="error">{{ error }}</li>
-        </ul>
-      </p>
       <form ref="form" @submit.stop.prevent="handleSubmit">
         <b-form-group
           label="Name"
@@ -52,12 +48,23 @@
           ></b-form-input>
         </b-form-group>
       </form>
+      <b-alert
+      :show="dismissCountDown"
+      dismissible
+      variant="danger"
+      @dismissed="dismissCountDown=0"
+      @dismiss-count-down="countDownChanged"
+      >
+        <p>Error occured when creating a game</p>
+      </b-alert>
     </b-modal>
   </div>
 </template>
 
 
 <script>
+import { baseUrl, xhr } from '@/modules/xhr';
+
 export default {
   data() {
     return {
@@ -68,20 +75,40 @@ export default {
       gameState: null,
       submittedNames: [],
       gameNames: [],
-      errors: []
+      errors: [],
+      dismissSecs: 2,
+      dismissCountDown: 0,
+      sessionId: '',
+      submitGameSuccess: false,
+      submitNameSuccess: false,
     }
   },
   props: {
     msg: String
   },
+
+  watch: {
+    submitGameSuccess(status) {
+      if (status) {
+        console.log('success');
+        this.enterTheGame();
+      }
+      else {
+        this.resetModal();
+      }
+    },
+    submitNameSuccess(status) {
+      if (status) {
+        this.$bvModal.hide('modal-prevent-closing');
+        window.location.assign(`${baseUrl}/${this.sessionId}`);
+      }
+      else {
+        this.resetModal();
+      }
+    }
+  },
+  
   methods: {
-    toggle() {
-        console.log('Toggle button clicked')
-        this.show = !this.show
-    },
-    dismissed() {
-      console.log('Alert dismissed')
-    },
     checkFormValidity() {
         this.nameState = true;
         this.gameState = true;
@@ -98,6 +125,8 @@ export default {
       this.nameState = null;
       this.gameName = '';
       this.gameState = null;
+      this.submitGameSuccess = false;
+      this.submitNameSuccess = false;
     },
     handleOk(bvModalEvt) {
       // Prevent modal from closing
@@ -112,11 +141,41 @@ export default {
       }
       // Push the name to submitted names
       this.submittedNames.push(this.name);
-      this.gameNames.push(this.gameName)
-      // Hide the modal manually
-      this.$nextTick(() => {
-        this.$bvModal.hide('modal-prevent-closing')
-      })
+      this.gameNames.push(this.gameName);
+      this.sendCreateGame();
+    },
+    async sendCreateGame() {
+      await xhr.post(`/new_game`, {
+          game_name: this.gameName,
+        })
+        .then(response => {
+          console.log(response.data);
+          this.submitGameSuccess = true;
+          this.sessionId = response.data.id;
+        })
+        .catch(() => {
+          this.showAlert();
+          this.submitGameSuccess = false;
+        })
+    },
+    async enterTheGame() {
+      await xhr.post(`/${this.sessionId}/join_game`, {
+          user_name: this.name,
+        })
+        .then(response => {
+          console.log(response.data);
+          this.submitNameSuccess = true;
+        })
+        .catch(() => {
+          this.showAlert();
+          this.submitNameSuccess = false;
+        })
+    },
+    countDownChanged(dismissCountDown) {
+      this.dismissCountDown = dismissCountDown
+    },
+    showAlert() {
+      this.dismissCountDown = this.dismissSecs
     }
   }
 }
