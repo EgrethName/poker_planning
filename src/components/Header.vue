@@ -1,10 +1,10 @@
 <template>
   <div class="container header-intro">
     <div class="row">
-    <div class="col-lg-2 col-sm-2">
-      <span class="text-general">PokerPlanning</span>
+    <div class="col-lg-3 col-sm-4">
+      <p class="text-general">PokerPlanning</p>
     </div>
-    <div class="col-lg-6 col-sm-4">
+    <div class="col-lg-5 col-sm-2">
     </div>
     <div class="col-lg-4 col-sm-6">
       <b-button class="btn-intro" v-b-modal.modal-login>Log In</b-button>
@@ -35,6 +35,7 @@ export default {
 
 .text-general {
     font-size: 24px;
+    margin: 10px;
 }
 
 .header-intro {
