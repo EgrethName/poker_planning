@@ -6,9 +6,18 @@ html,body {
 
 .wrapper {
     background-color: rgb(213, 243, 212);
+    height: 89%;
 }
 
 #app {
     background-color: rgb(203, 247, 248);
     height: 100%;
 }
+
+.poker-footer {
+    position:absolute;
+    bottom:0;
+    width:100%;
+    background:#6cf;
+ }
+
