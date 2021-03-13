@@ -1,17 +1,21 @@
 <template>
   <div id="app">
-    <div class=""></div>
     <Header />
     <div class="wrapper container">
-      <div class="heading"></div>
-        <PokerHello />
-      <div class="row">
-        <aside class="col-md-7">
-        </aside>
-        <section class="col-md-17"></section>
+      <div class="index-container">
+        <b-jumbotron
+          header="Poker Planning"
+          lead="A simple app for agile poker planning"
+          class="poker-jumbo"
+          >
+          <p>Create a game to start planning!</p>
+            <PokerHello />
+        </b-jumbotron>
       </div>
     </div>
-    <footer></footer>
+    <footer class="poker-footer">
+      <!-- <Header /> -->
+    </footer>
   </div>
 </template>
 
@@ -36,6 +40,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: calc(var(--vh, 1vh)*100);
 }
 
 #nav {
@@ -49,5 +54,16 @@ export default {
       color: #42b983;
     }
   }
+}
+
+.poker-jumbo {
+  background-color: #42b983 !important;
+}
+
+.index-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 </style>
