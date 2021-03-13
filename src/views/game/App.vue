@@ -1,18 +1,23 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="../../assets/logo.png">
-    <PokerHello/>
+    <Header />
+    <div class="wrapper container">
+      <GameField />
+    </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import PokerHello from '@/components/PokerHello.vue'
+import Header from '@/components/Header.vue';
+import GameField from '@/components/GameField.vue';
+
 
 export default {
-  name: 'Home',
+  name: 'Game',
   components: {
-    PokerHello
+    Header,
+    GameField
   }
 }
 </script>
@@ -24,6 +29,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: calc(var(--vh, 1vh)*100);
+  overflow: hidden;
 }
 
 #nav {
