@@ -1,3 +1,5 @@
+import uuid
+
 
 class SessionExists(Exception):
     pass
@@ -19,6 +21,7 @@ class Session:
         self.members = []
         self.name = name
         self.vote = Vote()
+        self.id = self.generate_sess_id()
 
     def __str__(self):
         return "Session {}".format(self.name)
@@ -28,6 +31,12 @@ class Session:
             raise ValueError
         self.members.append(member)
 
+    @staticmethod
+    def generate_sess_id():
+        raw_id = uuid.uuid4()
+        sess_id = str(raw_id.hex)[:11]
+        return sess_id
+
 
 class SessionHolder:
     def __init__(self):
@@ -35,15 +44,15 @@ class SessionHolder:
 
     def add_session(self, session):
         for added_session in self.sessions:
-            if session.name == added_session.name:
+            if session.id == added_session.id:
                 raise SessionExists
         if not isinstance(session, Session):
             raise ValueError
         self.sessions.append(session)
 
-    def get_session_by_name(self, name):
+    def get_session_by_id(self, sess_id):
         for sess in self.sessions:
-            if sess.name == name:
+            if sess.id == sess_id:
                 return sess
 
 
