@@ -6,7 +6,7 @@
       Submitted Names:
       <div v-if="submittedNames.length === 0">--</div>
       <ul v-else class="mb-0 pl-3">
-        <li v-for="name in submittedNames" :key="name">{{ name }}</li>
+        <li v-for="name in submittedGames" :key="name">{{ name }}</li>
       </ul>
     </div> -->
 
@@ -21,19 +21,6 @@
       cancel-variant="dark"
     >
       <form ref="form" @submit.stop.prevent="handleSubmit">
-        <b-form-group
-          label="Name"
-          label-for="name-input"
-          invalid-feedback="Name is required"
-          :state="nameState"
-        >
-          <b-form-input
-            id="name-input"
-            v-model="name"
-            :state="nameState"
-            required
-          ></b-form-input>
-        </b-form-group>
         <b-form-group
           label="Game name"
           label-for="game-input"
@@ -91,14 +78,6 @@ export default {
     submitGameSuccess(status) {
       if (status) {
         console.log('success');
-        this.enterTheGame();
-      }
-      else {
-        this.resetModal();
-      }
-    },
-    submitNameSuccess(status) {
-      if (status) {
         this.$bvModal.hide('modal-prevent-closing');
         window.location.assign(`${baseUrl}/${this.sessionId}`);
       }
@@ -110,15 +89,7 @@ export default {
   
   methods: {
     checkFormValidity() {
-        this.nameState = true;
-        this.gameState = true;
-        if (!this.name) {
-          this.nameState = false
-        }
-        if (!this.gameName) {
-          this.gameState = false
-        }
-        return this.nameState && this.gameState
+      return this.gameName;
     },
     resetModal() {
       this.name = '';
@@ -140,7 +111,6 @@ export default {
         return
       }
       // Push the name to submitted names
-      this.submittedNames.push(this.name);
       this.gameNames.push(this.gameName);
       this.sendCreateGame();
     },
@@ -156,19 +126,6 @@ export default {
         .catch(() => {
           this.showAlert();
           this.submitGameSuccess = false;
-        })
-    },
-    async enterTheGame() {
-      await xhr.post(`/${this.sessionId}/join_game`, {
-          user_name: this.name,
-        })
-        .then(response => {
-          console.log(response.data);
-          this.submitNameSuccess = true;
-        })
-        .catch(() => {
-          this.showAlert();
-          this.submitNameSuccess = false;
         })
     },
     countDownChanged(dismissCountDown) {
