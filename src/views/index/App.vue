@@ -26,10 +26,15 @@ import Header from '@/components/Header.vue';
 
 export default {
   name: "App",
+  data() {
+    return {
+      name: ''
+    }
+  },
   components: {
     PokerHello,
     Header,
-  },
+  }
 };
 </script>
 
