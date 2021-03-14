@@ -21,3 +21,6 @@ html,body {
     background:#6cf;
  }
 
+ .fix-height {
+    height: 100%;
+  }
