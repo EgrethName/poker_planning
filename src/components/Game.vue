@@ -8,7 +8,7 @@
       </div>
       <div class="col-lg-4 card-box">
         <div class="card-holder">
-          <Card 
+          <Card
             v-for="card in cardSet"
             v-bind:key="card"
             :value="card"
@@ -116,7 +116,7 @@ export default {
   height: 10em;
   display: flex;
   align-items: center;
-  justify-content: center 
+  justify-content: center;
 }
 
 .card-box {
