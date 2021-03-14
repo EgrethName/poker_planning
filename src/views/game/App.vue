@@ -2,7 +2,7 @@
   <div id="app">
     <Header />
     <div class="wrapper container">
-      <GameField />
+      <Game />
     </div>
   </div>
 </template>
@@ -10,14 +10,14 @@
 <script>
 // @ is an alias to /src
 import Header from '@/components/Header.vue';
-import GameField from '@/components/GameField.vue';
+import Game from '@/components/Game.vue';
 
 
 export default {
-  name: 'Game',
+  name: '',
   components: {
     Header,
-    GameField
+    Game
   }
 }
 </script>
