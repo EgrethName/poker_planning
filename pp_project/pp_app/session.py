@@ -5,37 +5,30 @@ class SessionExists(Exception):
     pass
 
 
-class Member:
-    def __init__(self, name):
-        self.name = name
-
-    def __str__(self):
-        return "Member {}".format(self.name)
-
-    def __repr__(self):
-        return "Member {}".format(self.name)
-
-
 class Session:
     def __init__(self, name):
-        self.members = []
+        self.users = []
         self.name = name
         self.vote = Vote()
+        self.completed_votes = []
         self.id = self.generate_sess_id()
 
     def __str__(self):
         return "Session {}".format(self.name)
 
-    def add_member(self, member):
-        if len(self.members) > 4:
+    def add_user(self, user):
+        if len(self.users) > 4:
             raise ValueError
-        self.members.append(member)
+        self.users.append(user)
 
     @staticmethod
     def generate_sess_id():
         raw_id = uuid.uuid4()
         sess_id = str(raw_id.hex)[:11]
         return sess_id
+
+    def save_vote(self):
+        self.completed_votes.append(self.vote.statistics)
 
 
 class SessionHolder:
@@ -60,8 +53,8 @@ class Vote:
     def __init__(self):
         self.votes = {}
 
-    def set_vote(self, member_name, vote_value):
-        self.votes[member_name] = vote_value
+    def set_vote(self, username, vote_value):
+        self.votes[username] = vote_value
 
     @property
     def average(self):
@@ -76,7 +69,8 @@ class Vote:
     def refresh_votes(self):
         self.votes = {}
 
-    def votes_statistics(self):
+    @property
+    def statistics(self):
         return {
             'average': self.average,
             'votes': self.votes
