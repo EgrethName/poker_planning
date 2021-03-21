@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 
 
 class SessionTable(models.Model):
-    sess_id = models.CharField()
-    name = models.CharField()
+    sess_id = models.CharField(max_length=15)
+    name = models.CharField(max_length=15)
 
 
 class VoteTable(models.Model):
