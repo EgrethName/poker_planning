@@ -15,27 +15,37 @@
     <div 
       class="mark-holder"
       v-text="markValue"
-      v-if="isVoteDone"
+      v-if="isVotingCompleted"
     >
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   data() {
     return {
       basicClass: 'player',
-      isVoted: false,
-      isVotingStarted: false,
-      isVoteDone: false,
-      mark: null
     }
   },
   props: {
     name: String
   },
   computed: {
+    ...mapState({
+      voteStatistics: (state) => state.voteStatistics.votes,
+      isVotingStarted: (state) => state.isVoteActive,
+      isVotingCompleted: (state) => state.isVoteCompleted,
+    }),
+    isVoted() {
+      console.log(this.name, this.voteStatistics);
+      return this.name in this.voteStatistics;
+    },
+    mark() {
+      return this.voteStatistics[this.name];
+    },
     stateClass() {
       return this.isVoted ? 'player__voted' : '';
     },
@@ -45,7 +55,8 @@ export default {
     markValue() {
       return this.isVoted && !this.isVotingStarted ? this.mark : '?'
     }
-  }
+  },
+
 }
 </script>
 
