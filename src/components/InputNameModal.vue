@@ -48,6 +48,9 @@ export default {
       submitNameSuccess: false
     }
   },
+  props: [
+    'value'
+  ],
   computed: {
     ...mapState({
         playerName: (state) => state.playerName,
@@ -81,7 +84,7 @@ export default {
     }
   },
   watch: {
-    submitNameSuccess(status) {
+    value(status) {
       if (status) {
         this.$bvModal.hide('modal-input-name');
       }
