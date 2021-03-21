@@ -1,9 +1,19 @@
 <template>
   <div class="fix-height game-field">
+    <b-form-input
+      :state="inputState"
+      type="text"
+      v-model="currentVoteTitle"
+      placeholder="Type current story title"
+      :disabled="isVoteActive"
+      :v-on:keyup="flushInputState"
+      class="input-name"
+    />
     <b-button
       :variant="!isVoteActive ? 'primary' : 'success'"
       v-text="!isVoteActive ? 'Start a new story' : 'End the vote'"
       @click="processVoteButton"
+      block
     >
     </b-button>
     <div class="game-table">
@@ -29,7 +39,7 @@ import PlayerBadge from '@/components/PlayerBadge.vue'
 export default {
   data() {
     return {
-      isVoteActive: false,
+      inputState: null
     }
   },
   components: {
@@ -38,8 +48,17 @@ export default {
   computed: {
     ...mapState({
         playersList: (state) => state.playersList,
+        isVoteActive: (state) => state.isVoteActive,
       }),
-  },
+      currentVoteTitle: {
+        get () {
+          return this.$store.state.activeVoteTitle
+        },
+        set (value) {
+          this.$store.commit('setActiveVoteTitle', value)
+        }
+      },
+    },
   methods: {
     processVoteButton() {
       if (this.isVoteActive) {
@@ -47,11 +66,24 @@ export default {
       }
       this.startVote();
     },
+    flushInputState() {
+      this.inputState = null
+    },
     endVote() {
-
+      this.$store.dispatch('endVote')
+      // this.isVoteActive = false
+      this.inputState = null
+      this.currentVoteTitle = ''
     },
     startVote() {
-
+      if (this.currentVoteTitle) {
+        this.inputState = true
+        this.$store.dispatch('startNewVote', this.currentVoteTitle)
+        // this.isVoteActive = true
+      }
+      else {
+        this.inputState = false;
+      }
     }
   }
 }
@@ -68,12 +100,16 @@ export default {
   padding: 15px;
 }
 
+.input-name {
+  margin: 5px 0;
+}
+
 .game-table {
   border: 2px solid #000;
   border-radius: 0;
   box-sizing: border-box;
   margin-top: 10px;
-  height: 90%;
+  height: 80%;
   flex: 1;
   display: flex;
   overflow: auto;
