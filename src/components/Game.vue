@@ -7,6 +7,9 @@
       <div class="col-lg-2">
       </div>
       <div class="col-lg-4 card-box">
+        <div class="name-header">
+          <h3> You are logged as: {{ playerName }}</h3>
+        </div>
         <div class="card-holder">
           <Card
             v-for="card in cardSet"
@@ -19,6 +22,7 @@
         <GameTable />
       </div>
       <InputNameModal
+        v-model="submitNameSuccess"
         @clicked="enterTheGame"
         ref="modalComponent"
       />
@@ -39,7 +43,6 @@ export default {
   data() {
     return {
       name: '',
-      roomName: 'Room',
       players: [],
       flags: {
         isVoteDone: false,
@@ -47,6 +50,7 @@ export default {
       },
       cards: null,
       passwordState: null,
+      submitNameSuccess: false,
     }
   },
   props: {
@@ -63,6 +67,7 @@ export default {
       ...mapState({
         playerName: (state) => state.playerName,
         sessionId: (state) => state.sessionId,
+        roomName: (state) => state.roomName,
       }),
   },
   methods: {
@@ -75,6 +80,7 @@ export default {
           this.submitNameSuccess = true;
           localStorage.name = name;
           this.$store.commit('setPlayerName', name);
+          this.$store.dispatch('getAllPlayers');
         })
         .catch(() => {
           this.showAlert();
@@ -95,6 +101,9 @@ export default {
     // name(newName) {
     //   localStorage.name = newName;
     // }
+  },
+  created() {
+    this.$store.dispatch('getSessionInfo');
   }
 }
 </script>
@@ -106,31 +115,34 @@ export default {
 
 .game-container {
   height: 100%;
+  overflow: auto;
 }
 
 .game-main {
-  height: 67%;
+  height: 75%;
 }
 
 .game-header {
-  height: 10em;
+  height: 7em;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.card-box {
+.name-header {
+  height: 4em;
+  padding-bottom: 1em;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .card-holder {
-  height: 400px;
+  height: 450px;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  justify-content: left;
+  justify-content: center;
   flex-shrink: 1;
 }
 
