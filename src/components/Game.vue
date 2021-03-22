@@ -21,6 +21,17 @@
       <div class="col-lg-6 fix-height">
         <GameTable />
       </div>
+      <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+          <p>Completed votes</p>
+          <div v-if="completedVotes.length === 0">--</div>
+          <ul v-else class="mb-0 pl-3">
+            <li v-for="vote in completedVotes" :key="vote">{{ vote }}</li>
+          </ul>
+        </div>
+        <div class="col-lg-2"></div>
+      </div>
       <InputNameModal
         v-model="submitNameSuccess"
         @clicked="enterTheGame"
@@ -33,6 +44,7 @@
 <script>
 import { mapState } from 'vuex';
 import { xhr } from '@/modules/xhr';
+import socket from '@/modules/socketModule';
 
 import Card from "@/components/Card";
 import GameTable from "@/components/GameTable";
@@ -68,15 +80,18 @@ export default {
         playerName: (state) => state.playerName,
         sessionId: (state) => state.sessionId,
         roomName: (state) => state.roomName,
+        completedVotes: (state) => state.completedVotes,
+        wsSessionId: (state) => state.wsSessionId,
+        isVoteActive: (state) => state.isVoteActive,
       }),
   },
   methods: {
-    async enterTheGame(name) {
-      await xhr.post(`/${this.sessionId}/join_game`, {
+    enterTheGame(name) {
+      xhr.post(`/${this.sessionId}/join_game`, {
           user_name: name,
+          ws_sid: this.wsSessionId
         })
-        .then(response => {
-          console.log(response.data);
+        .then(() => {
           this.submitNameSuccess = true;
           localStorage.name = name;
           this.$store.commit('setPlayerName', name);
@@ -89,13 +104,18 @@ export default {
     },
   },
   mounted() {
-    console.log('mounted');
-    if (localStorage.name) {
-      this.$store.commit('setPlayerName', localStorage.name);
-      this.enterTheGame(localStorage.name);
-    } else {
-      this.$refs.modalComponent.show();
-    }
+    socket.on('connect', () => {
+      console.log('connected');
+      this.$store.commit('setWSSessionId', socket.id);
+      console.log(this.wsSessionId);
+
+      if (localStorage.name) {
+        this.$store.commit('setPlayerName', localStorage.name);
+        this.enterTheGame(localStorage.name);
+      } else {
+        this.$refs.modalComponent.show();
+      }
+    });
   },
   watch: {
     // name(newName) {
@@ -103,6 +123,8 @@ export default {
     // }
   },
   created() {
+    console.log('created');
+    this.$store.dispatch('activate');
     this.$store.dispatch('getSessionInfo');
   }
 }

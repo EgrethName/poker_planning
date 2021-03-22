@@ -1,7 +1,7 @@
 <template>
   <div>
     <button
-      v-bind:class="[isSelected ? selectedClass : '', basicClass]"
+      v-bind:class="[(isSelected && isVoteActive) ? selectedClass : '', basicClass]"
       @click="setVote"
     >
       <h3>{{ value }}</h3>
@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   data() {
     return {
@@ -18,14 +20,20 @@ export default {
       selectedClass: 'card-item__selected',
     }
   },
+  computed: {
+    ...mapState({
+      isVoteActive: (state) => state.isVoteActive,
+    })
+  },
   props: {
     value: String
   },
   methods: {
     setVote() {
       this.$store.dispatch('sendVote', this.value);
+      this.isSelected = true;
     }
-  }
+  },
 }
 </script>
 
