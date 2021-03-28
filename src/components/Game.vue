@@ -14,6 +14,7 @@
           id="overlay-background"
           :show="!isVoteActive"
           rounded="sm"
+          opacity="1"
         >
           <div class="card-holder">
             <Card
@@ -38,7 +39,9 @@
         </div>
       </div>
       <div class="col-lg-6 game-table-container">
-        <GameTable />
+        <GameTable
+          @voteCompleted="showStatsModalFromData"
+        />
       </div>
       <InputNameModal
         v-model="submitNameSuccess"
@@ -54,18 +57,12 @@
         <div class="col-lg-4"></div>
         <div class="col-lg-4 col-sm-12">
           <p>Completed votes</p>
-          <!-- <b-button
-            v-b-toggle="'collapse-2'"
-            class="m-1"
-          >
-            Toggle Collapse
-          </b-button> -->
           <b-collapse visible id="collapse-2">
             <div class="holder">
               <CompletedVoteBadge
                 ref="completedVotes"
                 v-for="item in completedVotes"
-                v-bind:key="item.name"
+                v-bind:key="item.id"
                 :stats="item"
                 @clicked="showStatsModal"
               />
@@ -123,7 +120,7 @@ export default {
   },
   computed: {
       cardSet() {
-        return ['0', '1', '2', '3', '5', '8', '13', '21', '34', '55', '89', 'inf', '?']
+        return ['0', '1', '2', '3', '5', '8', '13', '21', '34', '55', '89', '∞', '?']
       },
       ...mapState({
         playerName: (state) => state.playerName,
@@ -132,7 +129,7 @@ export default {
         completedVotes: (state) => state.completedVotes,
         wsSessionId: (state) => state.wsSessionId,
         isVoteActive: (state) => state.isVoteActive,
-        lastVoteResults: (state) => state.voteStatisticsgameLink,
+        lastVoteResults: (state) => state.voteStatistics,
         gameLink: (state) => state.gameLink,
       }),
   },
@@ -157,24 +154,24 @@ export default {
       this.$store.dispatch('sendVote', vote);
       for (let card of this.$refs.cards) {
         if (card.value === vote) {
-          card.selected = true;
+          card.isSelected = true;
         }
         else {
-          card.selected = false;
+          card.isSelected = false;
         }
       }
     },
     clearCardVotes() {
       for (let card of this.$refs.cards) {
-        card.selected = false;
+        card.isSelected = false;
       }
     },
-    showMsgOk() {
-      this.currentStats = cloneDeep(this.lastVoteResults);
+    showStatsModalFromData(stats) {
+      console.log('last res', stats);
+      this.currentStats = cloneDeep(stats);
       this.$refs.statsModal.show()
     },
     showStatsModal(id) {
-      console.log('id', id);
       let requestedStats = {};
       for (let stats of this.completedVotes) {
         if (stats.id === id) {
@@ -216,10 +213,15 @@ export default {
     })
   },
   watch: {
-    // eslint-disable-next-line no-unused-vars
-    isVoteActive(val, oldVal) {
+    isVoteActive(val) {
       if (!val) {
         this.clearCardVotes();
+      }
+    },
+    completedVotes: {
+      deep: true,
+      handler(val) {
+        console.log('The list of completed votes has changed!', val);
       }
     }
   },
@@ -256,6 +258,7 @@ export default {
 .name-header {
   height: 4em;
   padding-bottom: 1em;
+  padding-top: 1em;
   display: flex;
   align-items: center;
   justify-content: center;

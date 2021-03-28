@@ -16,11 +16,12 @@ export default {
     return {
       basicClass: 'card-item',
       selectedClass: 'card-item__selected',
+      isSelected: this.selected,
     }
   },
   computed: {
     classList() {
-      return [this.selected ? this.selectedClass : '', this.basicClass]
+      return [this.isSelected ? this.selectedClass : '', this.basicClass]
     }
   },
   props: {
@@ -31,8 +32,6 @@ export default {
     setVote() {
       this.$emit('voted', this.value);
     }
-  },
-  watch: {
   }
 }
 </script>
