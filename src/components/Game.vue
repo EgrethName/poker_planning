@@ -1,5 +1,5 @@
 <template>
-  <div class="game-container container">
+  <div class="game-container container" id="game-box">
     <div class="row game-header">
       <h2>{{ roomName }}</h2>
     </div>
@@ -10,38 +10,73 @@
         <div class="name-header">
           <h3> You are logged as: {{ playerName }}</h3>
         </div>
-        <div class="card-holder">
-          <Card
-            v-for="card in cardSet"
-            v-bind:key="card"
-            :value="card"
-          />
-        </div>
+        <b-overlay
+          id="overlay-background"
+          :show="!isVoteActive"
+          :variant="variant"
+          :opacity="opacity"
+          :blur="blur"
+          rounded="sm"
+        >
+          <div class="card-holder">
+            <Card
+              ref="cards"
+              v-for="card in cardSet"
+              v-bind:key="card"
+              :value="card"
+              @voted="processVote"
+            />
+          </div>
+          <template #overlay>
+            <div class="text-center">
+              <b-icon icon="stopwatch" font-scale="3" animation="fade"></b-icon>
+              <p id="cancel-label">Please, start new vote</p>
+            </div>
+          </template>
+        </b-overlay>
       </div>
-      <div class="col-lg-6 fix-height">
+      <div class="col-lg-6 game-table-container">
         <GameTable />
-      </div>
-      <div class="row">
-        <div class="col-lg-2"></div>
-        <div class="col-lg-8">
-          <p>Completed votes</p>
-          <div v-if="completedVotes.length === 0">--</div>
-          <ul v-else class="mb-0 pl-3">
-            <li v-for="vote in completedVotes" :key="vote">{{ vote }}</li>
-          </ul>
-        </div>
-        <div class="col-lg-2"></div>
       </div>
       <InputNameModal
         v-model="submitNameSuccess"
         @clicked="enterTheGame"
         ref="modalComponent"
       />
+      <CompletedVoteModal
+        ref="statsModal"
+        :stats="currentStats"
+      />
     </div>
+    <div class="row completed-votes">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4 col-sm-12">
+          <p>Completed votes</p>
+          <!-- <b-button
+            v-b-toggle="'collapse-2'"
+            class="m-1"
+          >
+            Toggle Collapse
+          </b-button> -->
+          <b-collapse visible id="collapse-2">
+            <div class="holder">
+              <CompletedVoteBadge
+                ref="completedVotes"
+                v-for="item in completedVotes"
+                v-bind:key="item.name"
+                :stats="item"
+                @clicked="showStatsModal"
+              />
+            </div>
+          </b-collapse>
+        </div>
+        <div class="col-lg-4"></div>
+      </div>
   </div>
 </template>
 
 <script>
+import cloneDeep from 'lodash/cloneDeep';
 import { mapState } from 'vuex';
 import { xhr } from '@/modules/xhr';
 import socket from '@/modules/socketModule';
@@ -49,6 +84,8 @@ import socket from '@/modules/socketModule';
 import Card from "@/components/Card";
 import GameTable from "@/components/GameTable";
 import InputNameModal from "@/components/InputNameModal";
+import CompletedVoteModal from "@/components/CompletedVoteModal";
+import CompletedVoteBadge from "@/components/CompletedVoteBadge";
 
 
 export default {
@@ -63,6 +100,12 @@ export default {
       cards: null,
       passwordState: null,
       submitNameSuccess: false,
+      currentStats: {
+        id: '',
+        name: '',
+        votes: {},
+        average: 0
+      }
     }
   },
   props: {
@@ -70,7 +113,9 @@ export default {
   components: {
     Card,
     GameTable,
-    InputNameModal
+    InputNameModal,
+    CompletedVoteModal,
+    CompletedVoteBadge
   },
   computed: {
       cardSet() {
@@ -83,6 +128,7 @@ export default {
         completedVotes: (state) => state.completedVotes,
         wsSessionId: (state) => state.wsSessionId,
         isVoteActive: (state) => state.isVoteActive,
+        lastVoteResults: (state) => state.voteStatistics
       }),
   },
   methods: {
@@ -102,8 +148,47 @@ export default {
           this.submitNameSuccess = false;
         })
     },
+    processVote(vote) {
+      this.$store.dispatch('sendVote', vote);
+      for (let card of this.$refs.cards) {
+        if (card.value === vote) {
+          card.selected = true;
+        }
+        else {
+          card.selected = false;
+        }
+      }
+    },
+    clearCardVotes() {
+      for (let card of this.$refs.cards) {
+        card.selected = false;
+      }
+    },
+    showMsgOk() {
+      this.currentStats = cloneDeep(this.lastVoteResults);
+      this.$refs.statsModal.show()
+    },
+    showStatsModal(id) {
+      console.log('id', id);
+      let requestedStats = {};
+      for (let stats of this.completedVotes) {
+        if (stats.id === id) {
+          requestedStats = cloneDeep(stats);
+          break;
+        }
+      }
+      this.currentStats = requestedStats;
+      this.$refs.statsModal.show()
+    },
+    scrollToEnd() {
+      var container = document.getElementById("game-box");
+      console.log(container.scrollTop, container.scrollHeight);
+      container.scrollTop = container.scrollHeight - container.clientHeight;
+      console.log(container.scrollTop, container.scrollHeight);
+    },
   },
   mounted() {
+    console.log(this.completedVotes);
     socket.on('connect', () => {
       console.log('connected');
       this.$store.commit('setWSSessionId', socket.id);
@@ -116,11 +201,22 @@ export default {
         this.$refs.modalComponent.show();
       }
     });
+    this.$root.$on('shown', (collapseId, isJustShown) => {
+      console.log('collapseId:', collapseId)
+      console.log('isJustShown:', isJustShown)
+
+      if (isJustShown) {
+        this.scrollToEnd();
+      }
+    })
   },
   watch: {
-    // name(newName) {
-    //   localStorage.name = newName;
-    // }
+    // eslint-disable-next-line no-unused-vars
+    isVoteActive(val, oldVal) {
+      if (!val) {
+        this.clearCardVotes();
+      }
+    }
   },
   created() {
     console.log('created');
@@ -137,11 +233,12 @@ export default {
 
 .game-container {
   height: 100%;
-  overflow: auto;
+  /* overflow: auto; */
 }
 
 .game-main {
   height: 75%;
+  overflow: auto;
 }
 
 .game-header {
@@ -166,6 +263,33 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
   flex-shrink: 1;
+}
+
+.game-table-container {
+  height: 98%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.completed-votes {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  overflow: auto;
+  padding-bottom: 50px;
+
+  p {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .holder {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+#cancel-label {
+  font-size: 20px;
 }
 
 </style>
