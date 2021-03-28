@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import cloneDeep from 'lodash/cloneDeep';
+import EventBus from '@/modules/eventBus';
 import { xhr, baseSessionId } from '@/modules/xhr';
 import socket from '@/modules/socketModule';
 
@@ -170,6 +171,7 @@ export default new Vuex.Store({
         commit('setVoteActive', false);
         commit('setVoteCompleted', true);
         commit('setVoteStats', msg);
+        EventBus.$emit('voteStatsAvailable', msg);
       });
     },
     resolveAfter2Seconds() {

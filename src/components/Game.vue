@@ -76,6 +76,7 @@
 
 <script>
 import cloneDeep from 'lodash/cloneDeep';
+import EventBus from '@/modules/eventBus';
 import { mapState } from 'vuex';
 import { xhr } from '@/modules/xhr';
 import socket from '@/modules/socketModule';
@@ -229,6 +230,9 @@ export default {
     console.log('created');
     this.$store.dispatch('activate');
     this.$store.dispatch('getSessionInfo');
+    EventBus.$on('voteStatsAvailable', msg => {
+      this.showStatsModalFromData(msg);
+    })
   }
 }
 </script>

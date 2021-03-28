@@ -74,9 +74,9 @@ export default {
     },
     endVote() {
       this.$store.dispatch('endVote')
-        .then(stats => {
-          this.$emit('voteCompleted', stats);
-        })
+        // .then(stats => {
+        //   this.$emit('voteCompleted', stats);
+        // })
       this.inputState = null
       this.currentVoteTitle = ''
     },
