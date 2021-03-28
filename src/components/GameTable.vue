@@ -21,6 +21,7 @@
       <div class="players-list">
         <div class="column">
           <PlayerBadge
+            ref="players"
             v-for="player in playersList"
             v-bind:key="player"
             :name="player"
@@ -49,6 +50,8 @@ export default {
     ...mapState({
         playersList: (state) => state.playersList,
         isVoteActive: (state) => state.isVoteActive,
+        voteStatistics: (state) => state.voteStatistics.votes,
+        isVotingCompleted: (state) => state.isVoteCompleted,
       }),
       currentVoteTitle: {
         get () {
@@ -71,7 +74,6 @@ export default {
     },
     endVote() {
       this.$store.dispatch('endVote')
-      // this.isVoteActive = false
       this.inputState = null
       this.currentVoteTitle = ''
     },
@@ -79,7 +81,6 @@ export default {
       if (this.currentVoteTitle) {
         this.inputState = true
         this.$store.dispatch('startNewVote', this.currentVoteTitle)
-        // this.isVoteActive = true
       }
       else {
         this.inputState = false;
@@ -94,10 +95,12 @@ export default {
   scoped
 >
 .game-field {
-  border: 2px solid #000;
-  border-radius: 0;
+  border: 0 solid #000;
+  border-radius: 10px;
   box-sizing: border-box;
   padding: 15px;
+  background-color: #E8EEF9;
+  box-shadow: 0 0 10px 0 rgba($color: #000000, $alpha: 0.4);
 }
 
 .input-name {
@@ -105,26 +108,28 @@ export default {
 }
 
 .game-table {
-  border: 2px solid #000;
-  border-radius: 0;
+  border: 1px solid #000;
+  border-radius: 10px;
   box-sizing: border-box;
+  background-color: #E8EEF9;
   margin-top: 10px;
   height: 80%;
-  flex: 1;
+  /* flex: 1; */
   display: flex;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   flex-direction: column;
   padding: 20px 30px;
+
+  p {
+    font-size: 20px;
+    font-weight: 600;
+  }
 }
 
 .players-list {
   min-height: -webkit-min-content;
   display: flex;
-
-  .hh {
-    height: 2000px;
-    background: red;
-  }
 }
 
 /* width */

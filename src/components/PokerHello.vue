@@ -2,14 +2,6 @@
   <div class="poker-intro">
     <b-button v-b-modal.modal-prevent-closing>Create a game</b-button>
 
-    <!-- <div class="mt-3">
-      Submitted Names:
-      <div v-if="submittedNames.length === 0">--</div>
-      <ul v-else class="mb-0 pl-3">
-        <li v-for="name in submittedGames" :key="name">{{ name }}</li>
-      </ul>
-    </div> -->
-
     <b-modal
       id="modal-prevent-closing"
       ref="modal"
@@ -19,6 +11,7 @@
       @ok="handleOk"
       ok-title="Create!"
       cancel-variant="dark"
+      centered
     >
       <form ref="form" @submit.stop.prevent="handleSubmit">
         <b-form-group

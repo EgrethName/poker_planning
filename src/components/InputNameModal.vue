@@ -8,6 +8,8 @@
       @hidden="resetModal"
       @ok="handleOk"
       ok-title="Send"
+      no-close-on-esc
+      no-close-on-backdrop
     >
       <form ref="form" @submit.stop.prevent="handleSubmit">
         <b-form-group
@@ -24,15 +26,6 @@
           ></b-form-input>
         </b-form-group>
       </form>
-      <b-alert
-      :show="dismissCountDown"
-      dismissible
-      variant="danger"
-      @dismissed="dismissCountDown=0"
-      @dismiss-count-down="countDownChanged"
-      >
-        <p>Error occured when creating a game</p>
-      </b-alert>
     </b-modal>
   </div>
 </template>
