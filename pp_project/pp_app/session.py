@@ -9,6 +9,7 @@ class Session:
     def __init__(self, name):
         self.name = name
         self.users = []
+        self.ws_users_bundle = {}
         self.vote_holder = []
         self.id = self.generate_sess_id()
         self.current_vote_session = None
@@ -44,6 +45,12 @@ class Session:
         self.current_vote_session.is_active = False
         self.current_vote_session = None
         return stat
+
+    def delete_user(self, sid):
+        user = self.ws_users_bundle.pop(sid, None)
+        if user in self.users:
+            self.users.remove(user)
+            return user
 
 
 class SessionHolder:
@@ -87,8 +94,11 @@ class VoteSession:
                 sum += value
             except ValueError:
                 pass
+        try:
+            _average = sum / len(self.votes)
+        except ZeroDivisionError:
+            _average = 0
 
-        _average = sum / len(self.votes)
         return _average
 
     def refresh_votes(self):
@@ -97,6 +107,7 @@ class VoteSession:
     @property
     def statistics(self):
         return {
+            'id': self.votesess_id,
             'title': self.title,
             'average': self.average,
             'votes': self.votes

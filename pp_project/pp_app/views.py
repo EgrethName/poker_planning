@@ -2,18 +2,18 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
-from .session import Session, SessionHolder, SessionExceptions, VoteSession
-from .models import VoteTable
+from .session import Session, SessionHolder, SessionExceptions
 
 import socketio
 import os
 import json
 
-async_mode = None
+async_mode = None  # Eventlet
 
 basedir = os.path.dirname(os.path.realpath(__file__))
 session_holder = SessionHolder()
 sio = socketio.Server(async_mode=async_mode, cors_allowed_origins="*", engineio_logger=True, logger=True)
+ws_holder = {}
 
 
 def index(request):
@@ -57,6 +57,8 @@ def join_the_session(request, sess_id):
         print("enter_room {}".format(sid))
         sio.enter_room(sid, sess_id)
         session = session_holder.get_session_by_id(sess_id)
+        ws_holder[sid] = session
+        session.ws_users_bundle[sid] = user
         try:
             session.add_user(user)
             sio.emit('new_user_joined', user, room=sess_id)
@@ -96,13 +98,13 @@ def get_all_users(request, sess_id):
 
 def info(request, sess_id):
     session = session_holder.get_session_by_id(sess_id)
-    vote_sessions = [vote_session.title for vote_session in session.vote_holder]
+    completed_votes = [vote_session.statistics for vote_session in session.vote_holder if not vote_session.is_active]
     active_vote_sessions = [vote_session.title for vote_session in session.vote_holder if vote_session.is_active]
     users = session.users
     return JsonResponse(status=200, data={'session_id': sess_id,
                                           'session_name': session.name,
                                           'session_users': users,
-                                          'vote_sessions': vote_sessions,
+                                          'completed_votes': completed_votes,
                                           'active_sessions': active_vote_sessions
                                           })
 
@@ -113,8 +115,6 @@ def set_vote(request, sess_id):
         body = json.loads(body_unicode)
         user = body['user_name']
         value = body['vote_value']
-        # vote = VoteTable(user, value)
-        # vote.save()
         session = session_holder.get_session_by_id(sess_id)
         session.set_vote(user, value)
         votes = session.current_vote_session.votes
@@ -176,4 +176,7 @@ def connect(sid, environ):
 
 @sio.event
 def disconnect(sid):
-    print("Disonnected! {}".format(sid))
+    session = ws_holder[sid]
+    user = session.delete_user(sid)
+    sio.emit('user_left', user, room=session.id)
+    print("Disconnected! {}".format(sid))
