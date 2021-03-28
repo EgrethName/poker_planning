@@ -1,26 +1,52 @@
-html,body { 
+html, body { 
     height:100%;
     display: flex;
     flex-direction: column;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important ; 
 }
 
 .wrapper {
-    background-color: rgb(213, 243, 212);
+    background-color: #fff;
     height: 89%;
+    box-shadow: 0 0 20px 0 rgb(0 0 0 / 20%);
+    border-radius: 10px;
+    overflow: auto;
 }
 
 #app {
-    background-color: rgb(203, 247, 248);
+    background-color: #E8EEF9;
     height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important ;
 }
 
 .poker-footer {
     position:absolute;
     bottom:0;
     width:100%;
-    background:#6cf;
+    background:#E8EEF9;
  }
 
  .fix-height {
     height: 100%;
   }
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 4px;
+}
+  
+/* Track */
+::-webkit-scrollbar-track {
+background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+background: #555;
+}
