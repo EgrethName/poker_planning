@@ -1,7 +1,7 @@
 <template>
   <div>
     <button
-      v-bind:class="[(isSelected && isVoteActive) ? selectedClass : '', basicClass]"
+      v-bind:class="classList"
       @click="setVote"
     >
       <h3>{{ value }}</h3>
@@ -10,30 +10,30 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 
 export default {
   data() {
     return {
-      isSelected: false,
       basicClass: 'card-item',
       selectedClass: 'card-item__selected',
     }
   },
   computed: {
-    ...mapState({
-      isVoteActive: (state) => state.isVoteActive,
-    })
+    classList() {
+      return [this.selected ? this.selectedClass : '', this.basicClass]
+    }
   },
   props: {
-    value: String
+    value: String,
+    selected: Boolean
   },
   methods: {
     setVote() {
-      this.$store.dispatch('sendVote', this.value);
-      this.isSelected = true;
+      this.$emit('voted', this.value);
     }
   },
+  watch: {
+  }
 }
 </script>
 
@@ -42,17 +42,17 @@ export default {
   scoped
 >
 $black: #282828;
-$point: salmon;
+$point: rgb(201, 255, 180);
 $point-light: lighten($point, 5%);
 
 $ratio: 1.918;
 $card_width: 50px;
 $card_height: $card_width * $ratio;
 $card_padding: 20px 7px;
-$card-bgcolor: white;
+$card-bgcolor: rgb(235, 235, 235);
 $card_margin: 5px;
 $card_round: 10px;
-$card-shadow: -4px -4px 0px 0px $point-light;
+$card-shadow: -2px -2px 5px 0px $point-light;
 
 .card-item {
   margin: 5px;
@@ -94,11 +94,11 @@ $card-shadow: -4px -4px 0px 0px $point-light;
   }
 
   &:hover {
-    background-color: rgb(123, 123, 255);
+    background-color: rgb(180, 255, 151);
   }
 
   &__selected {
-    background-color: rgb(72, 72, 165);
+    background-color: rgb(130, 255, 80);
   }
 }
 </style>
