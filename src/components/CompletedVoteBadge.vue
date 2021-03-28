@@ -4,7 +4,7 @@
       class="completed-vote-badge"
       @click="onClick"
     >    
-      {{ name }}
+      {{ title }}
     </button>
   </div>
 </template>
@@ -15,8 +15,8 @@ export default {
     stats: Object,
   },
   computed: {
-    name() {
-      return this.stats.name;
+    title() {
+      return this.stats.title;
     },
     id() {
       return this.stats.id;

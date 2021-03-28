@@ -105,7 +105,7 @@ export default {
       submitNameSuccess: false,
       currentStats: {
         id: '',
-        name: '',
+        title: '',
         votes: {},
         average: 0
       }

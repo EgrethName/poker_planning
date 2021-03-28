@@ -16,7 +16,7 @@ export default new Vuex.Store({
     isVoteCompleted: false,
     voteStatistics: {
       id: '',
-      name: '',
+      title: '',
       average: 0,
       votes: {}
     },
@@ -26,7 +26,7 @@ export default new Vuex.Store({
     completedVotes: [
       {
         id: 'xxx',
-        name: 'Vote',
+        title: 'Vote',
         average: 0,
         votes: {
           Vasya: "5",
@@ -35,7 +35,7 @@ export default new Vuex.Store({
       },
       {
         id: 'xxx1',
-        name: 'Vote2',
+        title: 'Vote2',
         average: 5,
         votes: {
           Vasya: "5",
@@ -44,7 +44,7 @@ export default new Vuex.Store({
       },
       {
         id: 'xxx2',
-        name: 'Vote3',
+        title: 'Vote3',
         average: 7,
         votes: {
           Vasya: "5",
@@ -61,7 +61,7 @@ export default new Vuex.Store({
       },
       {
         id: 'xxx3',
-        name: 'Vote4',
+        title: 'Vote4',
         average: 9,
         votes: {
           Vasya: "5",
@@ -98,6 +98,9 @@ export default new Vuex.Store({
     },
     setVoteCompleted: (state, payload) => {
       state.isVoteCompleted = payload;
+    },
+    setInitialCompletedVotes: (state, completedVotes) => {
+      state.completedVotes = completedVotes;
     },
     setVoteStats: (state, stats) => {
       state.completedVotes.push(stats);
@@ -175,6 +178,7 @@ export default new Vuex.Store({
           commit('setRoomName', data.session_name);
           commit('setSessionId', data.session_id);
           commit('setPlayersList', data.session_users);
+          commit('setInitialCompletedVotes', data.completed_votes);
 
           if (data.active_sessions.length){
             commit('setVoteActive', true);

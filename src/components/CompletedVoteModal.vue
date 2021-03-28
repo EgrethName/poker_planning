@@ -51,7 +51,7 @@ export default {
   computed: {
     title() {
       console.log(this.stats);
-      return this.stats.name ? this.stats.name : '';
+      return this.stats.title ? this.stats.title : '';
     },
     average() {
       return this.stats.average;
