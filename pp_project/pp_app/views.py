@@ -9,9 +9,11 @@ import socketio
 import os
 import json
 
+async_mode = None
+
 basedir = os.path.dirname(os.path.realpath(__file__))
 session_holder = SessionHolder()
-sio = socketio.Server()
+sio = socketio.Server(async_mode=async_mode, cors_allowed_origins="*", engineio_logger=True, logger=True)
 
 
 def index(request):
@@ -40,6 +42,7 @@ def create_vote_session(request, sess_id):
         title = body['title']
         session = session_holder.get_session_by_id(sess_id)
         votesess_id = session.add_vote_session(sess_id, title)
+        sio.emit('new_vote_started', title, room=sess_id)
         return JsonResponse({'id': votesess_id})
 
     return HttpResponse(status=405)
@@ -50,9 +53,13 @@ def join_the_session(request, sess_id):
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
         user = body['user_name']   # передача строкой, переделать через USER
+        sid = body['ws_sid']
+        print("enter_room {}".format(sid))
+        sio.enter_room(sid, sess_id)
         session = session_holder.get_session_by_id(sess_id)
         try:
             session.add_user(user)
+            sio.emit('new_user_joined', user, room=sess_id)
         except ValueError:
             return JsonResponse(status=400, data={'error': "too many users in {} vote session".format(session.name)})
 
@@ -110,6 +117,8 @@ def set_vote(request, sess_id):
         # vote.save()
         session = session_holder.get_session_by_id(sess_id)
         session.set_vote(user, value)
+        votes = session.current_vote_session.votes
+        sio.emit('got_new_vote', votes, room=sess_id)
         return HttpResponse(status=200)
 
     return HttpResponse(status=405)
@@ -128,6 +137,7 @@ def end_vote_session(request, sess_id):
     if request.method == "POST":
         session = session_holder.get_session_by_id(sess_id)
         stat = session.end_current_vote()
+        sio.emit('vote_completed', stat, room=sess_id)
         return JsonResponse(status=200, data={'statistics': stat})
 
     return HttpResponse(status=405)
@@ -157,3 +167,13 @@ def log_in(request):
                 raise Exception('Disabled account')
         else:
             raise Exception('Invalid login/password')
+
+
+@sio.event
+def connect(sid, environ):
+    print("Connected! {}".format(sid))
+
+
+@sio.event
+def disconnect(sid):
+    print("Disonnected! {}".format(sid))

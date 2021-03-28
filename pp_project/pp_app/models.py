@@ -16,3 +16,4 @@ class VoteTable(models.Model):
 class SessionResults(models.Model):
     value = models.IntegerField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
