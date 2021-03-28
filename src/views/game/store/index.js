@@ -10,18 +10,66 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    playersList: [],
+    playersList: ['Player1', 'Player2', 'Player3'],
     playerName: '',
     isVoteActive: false,
     isVoteCompleted: false,
     voteStatistics: {
+      id: '',
+      name: '',
       average: 0,
       votes: {}
     },
     isVoteSet: false,
     sessionId: baseSessionId,
     wsSessionId: socket.id,
-    completedVotes: [],
+    completedVotes: [
+      {
+        id: 'xxx',
+        name: 'Vote',
+        average: 0,
+        votes: {
+          Vasya: "5",
+          Petya: "10"
+        }
+      },
+      {
+        id: 'xxx1',
+        name: 'Vote2',
+        average: 5,
+        votes: {
+          Vasya: "5",
+          Petya: "10"
+        }
+      },
+      {
+        id: 'xxx2',
+        name: 'Vote3',
+        average: 7,
+        votes: {
+          Vasya: "5",
+          Petya: "10",
+          Sanyok: "7",
+          Dimoooon: "10",
+          Pl1: "7",
+          Pl2: "10",
+          Pl3: "7",
+          Pl4: "10",
+          Pl5: "7",
+          Pl6: "10",
+        }
+      },
+      {
+        id: 'xxx3',
+        name: 'Vote4',
+        average: 9,
+        votes: {
+          Vasya: "5",
+          Petya: "10",
+          Sanyok: "13"
+        }
+      },
+    ],
     roomName: '',
     activeVoteTitle: ''
   },
@@ -51,17 +99,6 @@ export default new Vuex.Store({
       state.isVoteCompleted = payload;
     },
     setVoteStats: (state, stats) => {
-      // const title = stats.title;
-      // delete stats.title;
-      // state.voteStatistics = stats;
-      // const payload = {
-      //   [title]: {
-      //     'average': stats.average,
-      //     'votes': stats.votes,
-      //   }
-      // }
-      // console.log(payload);
-      // state.completedVotes = Object.assign({}, state.completedVotes, payload);
       state.completedVotes.push(stats);
     },
     setVoteSet: (state, payload) => {
@@ -148,10 +185,6 @@ export default new Vuex.Store({
           console.log('session info error', response);
         })
     },
-    // on new user connect -> new_user_joined
-    // on new vote sent -> got_new_vote
-    // on game start -> new_vote_started
-    // on game end -> vote_completed
     activate({ commit }) {
       socket.on('got_new_vote', msg => {
         console.log('got new vote', msg);
@@ -180,7 +213,7 @@ export default new Vuex.Store({
       return new Promise(resolve => {
         setTimeout(() => {
           resolve('resolved');
-        }, 4000);
+        }, 2000);
       });
     }
   
