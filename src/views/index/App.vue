@@ -56,13 +56,16 @@ export default {
     color: #2c3e50;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: #BDD0F7;
     }
   }
 }
 
 .poker-jumbo {
-  background-color: #42b983 !important;
+  background-color: #BDD0F7 !important;
+  h1 {
+    font-weight: 500;
+  }
 }
 
 .index-container {
