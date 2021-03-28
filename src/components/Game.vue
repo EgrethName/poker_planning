@@ -13,9 +13,6 @@
         <b-overlay
           id="overlay-background"
           :show="!isVoteActive"
-          :variant="variant"
-          :opacity="opacity"
-          :blur="blur"
           rounded="sm"
         >
           <div class="card-holder">
@@ -30,10 +27,15 @@
           <template #overlay>
             <div class="text-center">
               <b-icon icon="stopwatch" font-scale="3" animation="fade"></b-icon>
-              <p id="cancel-label">Please, start new vote</p>
+              <p id="cancel-label">Please, start a new vote</p>
             </div>
           </template>
         </b-overlay>
+        <div class="invitation-link">
+          <InvitationPanel
+            :link="gameLink"
+          />
+        </div>
       </div>
       <div class="col-lg-6 game-table-container">
         <GameTable />
@@ -86,6 +88,7 @@ import GameTable from "@/components/GameTable";
 import InputNameModal from "@/components/InputNameModal";
 import CompletedVoteModal from "@/components/CompletedVoteModal";
 import CompletedVoteBadge from "@/components/CompletedVoteBadge";
+import InvitationPanel from '@/components/InvitationPanel.vue';
 
 
 export default {
@@ -115,7 +118,8 @@ export default {
     GameTable,
     InputNameModal,
     CompletedVoteModal,
-    CompletedVoteBadge
+    CompletedVoteBadge,
+    InvitationPanel,
   },
   computed: {
       cardSet() {
@@ -128,7 +132,8 @@ export default {
         completedVotes: (state) => state.completedVotes,
         wsSessionId: (state) => state.wsSessionId,
         isVoteActive: (state) => state.isVoteActive,
-        lastVoteResults: (state) => state.voteStatistics
+        lastVoteResults: (state) => state.voteStatisticsgameLink,
+        gameLink: (state) => state.gameLink,
       }),
   },
   methods: {

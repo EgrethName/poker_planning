@@ -71,7 +71,8 @@ export default new Vuex.Store({
       },
     ],
     roomName: '',
-    activeVoteTitle: ''
+    activeVoteTitle: '',
+    gameLink: window.location.href
   },
   mutations: {
     setSessionId: (state, id) => {

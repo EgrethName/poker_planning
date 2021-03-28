@@ -123,7 +123,7 @@ export default {
 }
 
 .modal-stats-content {
-  /* background-color: #E8EEF9; */
+  background-color: #fff;
 }
 
 .chart {
