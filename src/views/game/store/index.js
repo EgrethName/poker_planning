@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-// import { socket } from '@/modules/socketModule';
+import cloneDeep from 'lodash/cloneDeep';
 import { xhr, baseSessionId } from '@/modules/xhr';
 import socket from '@/modules/socketModule';
 
@@ -23,53 +23,7 @@ export default new Vuex.Store({
     isVoteSet: false,
     sessionId: baseSessionId,
     wsSessionId: socket.id,
-    completedVotes: [
-      {
-        id: 'xxx',
-        title: 'Vote',
-        average: 0,
-        votes: {
-          Vasya: "5",
-          Petya: "10"
-        }
-      },
-      {
-        id: 'xxx1',
-        title: 'Vote2',
-        average: 5,
-        votes: {
-          Vasya: "5",
-          Petya: "10"
-        }
-      },
-      {
-        id: 'xxx2',
-        title: 'Vote3',
-        average: 7,
-        votes: {
-          Vasya: "5",
-          Petya: "10",
-          Sanyok: "7",
-          Dimoooon: "10",
-          Pl1: "7",
-          Pl2: "10",
-          Pl3: "7",
-          Pl4: "10",
-          Pl5: "7",
-          Pl6: "10",
-        }
-      },
-      {
-        id: 'xxx3',
-        title: 'Vote4',
-        average: 9,
-        votes: {
-          Vasya: "5",
-          Petya: "10",
-          Sanyok: "13"
-        }
-      },
-    ],
+    completedVotes: [],
     roomName: '',
     activeVoteTitle: '',
     gameLink: window.location.href
@@ -100,9 +54,10 @@ export default new Vuex.Store({
       state.isVoteCompleted = payload;
     },
     setInitialCompletedVotes: (state, completedVotes) => {
-      state.completedVotes = completedVotes;
+      state.completedVotes = cloneDeep(completedVotes);
     },
     setVoteStats: (state, stats) => {
+      console.log('setting vote stats', stats);
       state.completedVotes.push(stats);
     },
     setVoteSet: (state, payload) => {
@@ -136,13 +91,16 @@ export default new Vuex.Store({
         })
     },
     endVote({ commit, state }) {
-      xhr.post(`${state.sessionId}/end_vote`)
-        .then(({ data }) => {
-          console.log('end vote', data);
-          commit('setVoteActive', false);
-          commit('setVoteCompleted', true);
-          commit('setVoteStats', data.statistics);
-        })
+      return new Promise(( resolve, reject ) => {
+        xhr.post(`${state.sessionId}/end_vote`)
+          .then(({ data }) => {
+            console.log('end vote', data);
+            commit('setVoteActive', false);
+            commit('setVoteCompleted', true);
+            resolve(data.statistics);
+          })
+          .catch(() => reject('Cannot end the game'))
+        });
     },
     sendVote({ commit, state, dispatch }, payload) {
       xhr.post(`${state.sessionId}/vote`, {
@@ -211,7 +169,7 @@ export default new Vuex.Store({
       socket.on('vote_completed', msg => {
         commit('setVoteActive', false);
         commit('setVoteCompleted', true);
-        commit('setVoteStats', msg.statistics);
+        commit('setVoteStats', msg);
       });
     },
     resolveAfter2Seconds() {
@@ -221,7 +179,11 @@ export default new Vuex.Store({
         }, 2000);
       });
     }
-  
+  },
+  getters: {
+    getCompletedVotes: state => {
+      return state.completedVotes;
+    }
   },
   modules: {
   }
