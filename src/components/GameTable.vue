@@ -11,7 +11,7 @@
     />
     <b-button
       :variant="!isVoteActive ? 'primary' : 'success'"
-      v-text="!isVoteActive ? 'Start a new story' : 'End the vote'"
+      v-text="!isVoteActive ? 'Start a new vote' : 'End the vote'"
       @click="processVoteButton"
       block
     >
