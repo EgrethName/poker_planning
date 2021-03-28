@@ -100,6 +100,9 @@ export default {
     show() {
       this.$refs.modal.show();
     },
+    hide() {
+      this.$refs.modal.hide();
+    },
     voteDescr(value) {
       return value == '1' ? 'vote' : 'votes';
     }

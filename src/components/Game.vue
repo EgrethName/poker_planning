@@ -183,6 +183,9 @@ export default {
       this.currentStats = requestedStats;
       this.$refs.statsModal.show()
     },
+    hideStatsModal() {
+      this.$refs.statsModal.hide()
+    },
     scrollToEnd() {
       var container = document.getElementById("game-box");
       console.log(container.scrollTop, container.scrollHeight);
@@ -232,6 +235,9 @@ export default {
     this.$store.dispatch('getSessionInfo');
     EventBus.$on('voteStatsAvailable', msg => {
       this.showStatsModalFromData(msg);
+    })
+    EventBus.$on('newVoteStarted', () => {
+      this.hideStatsModal();
     })
   }
 }

@@ -123,6 +123,7 @@ export default new Vuex.Store({
           commit('clearVoteStats', true);
           commit('setVoteActive', true);
           commit('setVoteCompleted', false);
+          EventBus.$emit('newVoteStarted');
         })
         .catch(() => {
           commit('setVoteActive', false);
