@@ -37,10 +37,14 @@ export default new Vuex.Store({
       state.playersList = payload;
     },
     addNewUser: (state, name) => {
-      console.log(state.playersList.indexOf(name), name, state.playersList)
+      console.log(state.playersList.indexOf(name), name, state.playersList);
       if (state.playersList.indexOf(name) === -1) {
         state.playersList.push(name);
       }
+    },
+    removeUser: (state, nameToRemove) => {
+      console.log(state.playersList.indexOf(nameToRemove), nameToRemove, state.playersList);
+      state.playersList = state.playersList.filter(name => name !== nameToRemove);
     },
     setVotes: (state, payload) => {
       state.voteStatistics.votes = Object.assign({}, state.voteStatistics.votes, payload);
@@ -123,7 +127,6 @@ export default new Vuex.Store({
           commit('clearVoteStats', true);
           commit('setVoteActive', true);
           commit('setVoteCompleted', false);
-          EventBus.$emit('newVoteStarted');
         })
         .catch(() => {
           commit('setVoteActive', false);
@@ -161,11 +164,17 @@ export default new Vuex.Store({
         commit('addNewUser', msg);
       });
 
+      socket.on('user_left', msg => {
+        console.log('user_left', msg);
+        commit('removeUser', msg);
+      });
+
       socket.on('new_vote_started', msg => {
         commit('setActiveVoteTitle', msg);
         commit('clearVoteStats', true);
         commit('setVoteActive', true);
         commit('setVoteCompleted', false);
+        EventBus.$emit('newVoteStarted');
       });
 
       socket.on('vote_completed', msg => {
@@ -173,6 +182,7 @@ export default new Vuex.Store({
         commit('setVoteCompleted', true);
         commit('setVoteStats', msg);
         EventBus.$emit('voteStatsAvailable', msg);
+        EventBus.$emit('voteCompleted');
       });
     },
     resolveAfter2Seconds() {

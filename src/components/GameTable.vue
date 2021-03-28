@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import EventBus from '@/modules/eventBus';
 import { mapState } from 'vuex';
 
 import PlayerBadge from '@/components/PlayerBadge.vue'
@@ -72,13 +73,16 @@ export default {
     flushInputState() {
       this.inputState = null
     },
+    cleanInputPlaceholder() {
+      this.flushInputState();
+      this.currentVoteTitle = ''
+    },
     endVote() {
       this.$store.dispatch('endVote')
         // .then(stats => {
         //   this.$emit('voteCompleted', stats);
         // })
-      this.inputState = null
-      this.currentVoteTitle = ''
+      this.cleanInputPlaceholder();
     },
     startVote() {
       if (this.currentVoteTitle) {
@@ -89,6 +93,11 @@ export default {
         this.inputState = false;
       }
     }
+  },
+  created() {
+    EventBus.$on('voteCompleted', () => {
+      this.cleanInputPlaceholder();
+    })
   }
 }
 </script>
