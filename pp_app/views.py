@@ -4,15 +4,14 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from .session import Session, SessionHolder, SessionExceptions
 
-import socketio
 import os
 import json
 
-async_mode = None  # 'threading' 'eventlet'
+from .sio import sio
+
 
 basedir = os.path.dirname(os.path.realpath(__file__))
 session_holder = SessionHolder()
-sio = socketio.Server(async_mode=async_mode, cors_allowed_origins="*", engineio_logger=True, logger=True)
 ws_holder = {}
 
 

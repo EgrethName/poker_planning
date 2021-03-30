@@ -12,7 +12,7 @@ import socketio
 
 from django.core.wsgi import get_wsgi_application
 
-from pp_app.views import sio
+from pp_app.sio import sio
 
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pp_project.settings')
