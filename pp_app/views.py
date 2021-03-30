@@ -8,7 +8,7 @@ import socketio
 import os
 import json
 
-async_mode = None  # Eventlet
+async_mode = None  # 'threading' 'eventlet'
 
 basedir = os.path.dirname(os.path.realpath(__file__))
 session_holder = SessionHolder()
