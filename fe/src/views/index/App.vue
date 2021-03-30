@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <Header />
+    <Header
+      tooltipText="Coming soon... Just create a game!"
+    />
     <div class="wrapper container">
       <div class="index-container">
         <b-jumbotron
@@ -40,7 +42,6 @@ export default {
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -63,6 +64,8 @@ export default {
 
 .poker-jumbo {
   background-color: #BDD0F7 !important;
+  border-radius: 1rem;
+
   h1 {
     font-weight: 500;
   }

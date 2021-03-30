@@ -7,14 +7,33 @@
     <div class="col-lg-4 col-sm-2">
     </div>
     <div class="col-lg-4 col-sm-6">
-      <b-button class="btn-intro" v-b-modal.modal-login>Log In</b-button>
-      <b-button class="btn-intro">Sign Up</b-button>
-      <b-button 
-        class="btn-intro"
-        @click="logout"
-      >
-        Log out
-      </b-button>
+      <div id="disabled-wrapper" class="btn-wrapper" tabindex="0">
+        <b-button 
+          class="btn-intro"
+          v-b-modal.modal-login
+          disabled
+        >
+          Log In
+        </b-button>
+      </div>
+      <div id="disabled-wrapper-2" class="btn-wrapper" >
+        <b-button 
+          class="btn-intro"
+          disabled
+        >
+          Sign Up
+        </b-button>
+      </div>
+      <div class="btn-wrapper" >
+        <b-button 
+          class="btn-intro"
+          @click="logout"
+        >
+          Log out
+        </b-button>
+      </div>
+      <b-tooltip target="disabled-wrapper">{{ tooltipText }}</b-tooltip>
+      <b-tooltip target="disabled-wrapper-2">{{ tooltipText }}</b-tooltip>
     </div>
     <LoginModal msg='Log In' />
   </div>
@@ -30,6 +49,9 @@ import LoginModal from '@/components/LoginModal.vue';
 export default {
   components: {
     LoginModal
+  },
+  props: {
+    tooltipText: String
   },
   methods: {
     logout() {
@@ -58,6 +80,12 @@ export default {
 }
 
 .btn-intro {
-  margin: 10px 10px;
+  margin: 10px 10px 0 10px;
+
 }
+
+.btn-wrapper {
+  display: inline-block;
+}
+
 </style>

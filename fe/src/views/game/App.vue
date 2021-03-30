@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <Header />
+    <Header
+      tooltipText="Coming soon..."
+    />
     <div class="wrapper container">
       <Game />
     </div>
