@@ -7,7 +7,7 @@ tests/
 .DS_Store
 node_modules
 /dist
-
+staticfiles
 
 # local env files
 .env.local
