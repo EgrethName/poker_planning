@@ -175,7 +175,12 @@ def connect(sid, environ):
 
 @sio.event
 def disconnect(sid):
-    session = ws_holder[sid]
+    try:
+        session = ws_holder[sid]
+    except KeyError:
+        return
     user = session.delete_user(sid)
     sio.emit('user_left', user, room=session.id)
     print("Disconnected! {}".format(sid))
+
+
