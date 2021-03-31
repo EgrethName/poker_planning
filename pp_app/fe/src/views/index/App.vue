@@ -15,9 +15,7 @@
         </b-jumbotron>
       </div>
     </div>
-    <footer class="poker-footer">
-      <!-- <Header /> -->
-    </footer>
+    <Footer />
   </div>
 </template>
 
@@ -25,6 +23,7 @@
 // @ is an alias to /src
 import PokerHello from "@/components/PokerHello.vue";
 import Header from '@/components/Header.vue';
+import Footer from '@/components/Footer.vue';
 
 export default {
   name: "App",
@@ -36,6 +35,7 @@ export default {
   components: {
     PokerHello,
     Header,
+    Footer
   }
 };
 </script>

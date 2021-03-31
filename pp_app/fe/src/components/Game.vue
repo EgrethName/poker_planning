@@ -1,7 +1,7 @@
 <template>
   <div class="game-container container" id="game-box">
     <div class="row game-header">
-      <h2>{{ roomName }}</h2>
+      <h2>Room1</h2>
     </div>
     <div class="row game-main">
       <div class="col-lg-2">
@@ -57,17 +57,15 @@
         <div class="col-lg-4"></div>
         <div class="col-lg-4 col-sm-12">
           <p>Completed votes</p>
-          <b-collapse visible id="collapse-2">
-            <div class="holder">
-              <CompletedVoteBadge
-                ref="completedVotes"
-                v-for="item in completedVotes"
-                v-bind:key="item.id"
-                :stats="item"
-                @clicked="showStatsModal"
-              />
-            </div>
-          </b-collapse>
+          <div class="holder">
+            <CompletedVoteBadge
+              ref="completedVotes"
+              v-for="item in completedVotes"
+              v-bind:key="item.id"
+              :stats="item"
+              @clicked="showStatsModal"
+            />
+          </div>
         </div>
         <div class="col-lg-4"></div>
       </div>
@@ -277,10 +275,10 @@ export default {
 }
 
 .completed-votes {
-  margin-top: 5px;
-  margin-bottom: 5px;
+  margin-top: 15px;
+  margin-bottom: 15px;
   overflow: auto;
-  padding-bottom: 50px;
+  padding-bottom: 5px;
 
   p {
     font-size: 20px;

@@ -6,6 +6,7 @@
     <div class="wrapper container">
       <Game />
     </div>
+    <Footer />
   </div>
 </template>
 
@@ -13,13 +14,14 @@
 // @ is an alias to /src
 import Header from '@/components/Header.vue';
 import Game from '@/components/Game.vue';
-
+import Footer from '@/components/Footer.vue';
 
 export default {
   name: '',
   components: {
     Header,
-    Game
+    Game,
+    Footer
   }
 }
 </script>
