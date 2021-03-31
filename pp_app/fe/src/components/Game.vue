@@ -168,7 +168,6 @@ export default {
       }
     },
     showStatsModalFromData(stats) {
-      console.log('last res', stats);
       this.currentStats = cloneDeep(stats);
       this.$refs.statsModal.show()
     },
@@ -188,17 +187,12 @@ export default {
     },
     scrollToEnd() {
       var container = document.getElementById("game-box");
-      console.log(container.scrollTop, container.scrollHeight);
       container.scrollTop = container.scrollHeight - container.clientHeight;
-      console.log(container.scrollTop, container.scrollHeight);
     },
   },
   mounted() {
-    console.log(this.completedVotes);
     socket.on('connect', () => {
-      console.log('connected');
       this.$store.commit('setWSSessionId', socket.id);
-      console.log(this.wsSessionId);
 
       if (localStorage.name) {
         this.$store.commit('setPlayerName', localStorage.name);
@@ -208,9 +202,6 @@ export default {
       }
     });
     this.$root.$on('shown', (collapseId, isJustShown) => {
-      console.log('collapseId:', collapseId)
-      console.log('isJustShown:', isJustShown)
-
       if (isJustShown) {
         this.scrollToEnd();
       }
@@ -224,13 +215,9 @@ export default {
     },
     completedVotes: {
       deep: true,
-      handler(val) {
-        console.log('The list of completed votes has changed!', val);
-      }
     }
   },
   created() {
-    console.log('created');
     this.$store.dispatch('activate');
     this.$store.dispatch('getSessionInfo');
     EventBus.$on('voteStatsAvailable', msg => {

@@ -18,7 +18,6 @@ cli
 
 const options = cli.opts();
 
-console.log(options.ip);
 process.env.VUE_APP_IP = options.ip;
 
 glob.sync('./src/views/**/app.js').forEach(path => {

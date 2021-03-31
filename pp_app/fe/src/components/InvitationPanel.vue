@@ -31,7 +31,6 @@ export default {
   },
   methods: {
     copyToClipboard() {
-      console.log('copy')
       let testingCodeToCopy = document.querySelector('#input-link');
       testingCodeToCopy.setAttribute('type', 'text');
       testingCodeToCopy.select();

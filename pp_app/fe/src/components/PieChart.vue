@@ -71,7 +71,6 @@ export default {
         .style("font-size", 20)
         .style("font-weight", 600)
         .text(function(d) {
-          console.log(d)
           return d.data.name 
         })
     }

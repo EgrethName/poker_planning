@@ -50,19 +50,16 @@ export default {
   },
   computed: {
     title() {
-      console.log(this.stats);
       return this.stats.title ? this.stats.title : '';
     },
     average() {
       return this.stats.average;
     },
     votes() {
-      console.log(this.stats.votes);
       return this.stats.votes;
     },
     uniqueVotes() {
       const values = Object.values(this.stats.votes);
-      console.log(values);
       return values
     },
     votesAsList() {
@@ -84,7 +81,6 @@ export default {
           counter[`${value}`] = 1;
         }
       }
-      console.log('cnt', counter);
       return counter
     },
     counterMarksAsList() {

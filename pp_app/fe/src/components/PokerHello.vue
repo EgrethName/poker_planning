@@ -70,7 +70,6 @@ export default {
   watch: {
     submitGameSuccess(status) {
       if (status) {
-        console.log('success');
         this.$bvModal.hide('modal-prevent-closing');
         window.location.assign(`${baseUrl}/${this.sessionId}`);
       }
@@ -112,7 +111,6 @@ export default {
           game_name: this.gameName,
         })
         .then(response => {
-          console.log(response.data);
           this.submitGameSuccess = true;
           this.sessionId = response.data.id;
         })

@@ -40,7 +40,6 @@ export default {
       isVotingCompleted: (state) => state.isVoteCompleted,
     }),
     isVoted() {
-      console.log(this.name, this.voteStatistics);
       return this.name in this.voteStatistics;
     },
     mark() {

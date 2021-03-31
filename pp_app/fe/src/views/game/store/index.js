@@ -37,13 +37,11 @@ export default new Vuex.Store({
       state.playersList = payload;
     },
     addNewUser: (state, name) => {
-      console.log(state.playersList.indexOf(name), name, state.playersList);
       if (state.playersList.indexOf(name) === -1) {
         state.playersList.push(name);
       }
     },
     removeUser: (state, nameToRemove) => {
-      console.log(state.playersList.indexOf(nameToRemove), nameToRemove, state.playersList);
       state.playersList = state.playersList.filter(name => name !== nameToRemove);
     },
     setVotes: (state, payload) => {
@@ -62,7 +60,6 @@ export default new Vuex.Store({
       state.completedVotes = cloneDeep(completedVotes);
     },
     setVoteStats: (state, stats) => {
-      console.log('setting vote stats', stats);
       state.completedVotes.push(stats);
     },
     setVoteSet: (state, payload) => {
@@ -99,7 +96,6 @@ export default new Vuex.Store({
       return new Promise(( resolve, reject ) => {
         xhr.post(`${state.sessionId}/end_vote`)
           .then(({ data }) => {
-            console.log('end vote', data);
             commit('setVoteActive', false);
             commit('setVoteCompleted', true);
             resolve(data.statistics);
@@ -112,8 +108,7 @@ export default new Vuex.Store({
         user_name: state.playerName,
         vote_value: payload
       })
-        .then(response => {
-          console.log('send vote resp', response);
+        .then(() => {
           dispatch('getAllVotes');
           commit('setVoteSet');
         })
@@ -122,8 +117,7 @@ export default new Vuex.Store({
       xhr.post(`${state.sessionId}/new_vote`, {
         title: payload
       })
-        .then(response => {
-          console.log('send start new vote resp', response);
+        .then(() => {
           commit('clearVoteStats', true);
           commit('setVoteActive', true);
           commit('setVoteCompleted', false);
@@ -136,8 +130,6 @@ export default new Vuex.Store({
     getSessionInfo({ commit, state, dispatch }) {
       xhr.get(`${state.sessionId}/info`)
         .then(({ data }) => {
-          console.log('session info', data);
-
           commit('setRoomName', data.session_name);
           commit('setSessionId', data.session_id);
           commit('setPlayersList', data.session_users);
@@ -155,17 +147,14 @@ export default new Vuex.Store({
     },
     activate({ commit }) {
       socket.on('got_new_vote', msg => {
-        console.log('got new vote', msg);
         commit('setVotes', msg);
       });
 
       socket.on('new_user_joined', msg => {
-        console.log('new_user_joined', msg);
         commit('addNewUser', msg);
       });
 
       socket.on('user_left', msg => {
-        console.log('user_left', msg);
         commit('removeUser', msg);
       });
 
