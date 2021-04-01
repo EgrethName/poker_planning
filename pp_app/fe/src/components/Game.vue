@@ -1,7 +1,7 @@
 <template>
   <div class="game-container container" id="game-box">
     <div class="row game-header">
-      <h2>Room1</h2>
+      <h2>{{ roomName }}</h2>
     </div>
     <div class="row game-main">
       <div class="col-lg-2">
