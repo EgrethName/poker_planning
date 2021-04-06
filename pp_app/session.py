@@ -88,14 +88,15 @@ class VoteSession:
     @property
     def average(self):
         sum = 0
+        validate_users_number = len(self.votes)
         for value in self.votes.values():
             try:
                 value = int(value)
                 sum += value
             except ValueError:
-                pass
+                validate_users_number -= 1
         try:
-            _average = sum / len(self.votes)
+            _average = sum / validate_users_number
         except ZeroDivisionError:
             _average = 0
 
