@@ -55,6 +55,8 @@ MIDDLEWARE = [
 
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True
+
 ROOT_URLCONF = 'pp_project.urls'
 
 TEMPLATES = [
@@ -136,7 +138,6 @@ STATICFILES_DIRS = (
 # https://warehouse.python.org/project/whitenoise/
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
