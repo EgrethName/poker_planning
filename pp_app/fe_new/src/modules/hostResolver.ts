@@ -1,4 +1,4 @@
-const getHostByEnv = (env) => {
+const getHostByEnv = (env: string): string => {
   switch (env) {
     case 'development':
       return process.env.VUE_APP_IP;

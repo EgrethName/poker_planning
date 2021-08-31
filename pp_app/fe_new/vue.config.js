@@ -5,10 +5,10 @@
 // import cli from 'commander';
 // import titles from './title';
 
-const titles = require('./title.js');
 const glob = require('glob');
 const path = require('path');
 const cli = require('commander');
+const titles = require('./title');
 
 const pages = {};
 
