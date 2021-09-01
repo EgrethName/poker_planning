@@ -5,7 +5,27 @@ import EventBus from '@/modules/eventBus';
 import { xhr, baseSessionId } from '@/modules/xhr';
 import socket from '@/modules/socketModule';
 
-export default createStore({
+export interface State {
+  playersList: Array<string>,
+  playerName: string,
+  isVoteActive: boolean,
+  isVoteCompleted: boolean,
+  voteStatistics: {
+    id: string,
+    title: string,
+    average: number,
+    votes: Record<string, unknown>,
+  },
+  isVoteSet: false,
+  sessionId: string,
+  wsSessionId: string,
+  completedVotes: Array<unknown>,
+  roomName: string,
+  activeVoteTitle: string,
+  gameLink: string,
+}
+
+export default createStore<State>({
   state: {
     playersList: ['Player1', 'Player2', 'Player3'],
     playerName: '',
@@ -20,7 +40,7 @@ export default createStore({
     isVoteSet: false,
     sessionId: baseSessionId,
     wsSessionId: socket.id,
-    completedVotes: Array<unknown>(),
+    completedVotes: [],
     roomName: '',
     activeVoteTitle: '',
     gameLink: window.location.href,
