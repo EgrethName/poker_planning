@@ -58,6 +58,13 @@ export default defineComponent({
   components: {
     NavBar,
   },
+
+  methods: {
+    logout() {
+      localStorage.removeItem('name');
+      this.$router.push('/');
+    },
+  },
 });
 
 </script>
