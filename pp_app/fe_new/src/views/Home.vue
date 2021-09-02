@@ -3,6 +3,9 @@
     <a-layout-header>
       <Header />
     </a-layout-header>
+    <a-layout-content>
+      KU
+    </a-layout-content>
     <a-layout-footer>
       <Footer />
     </a-layout-footer>

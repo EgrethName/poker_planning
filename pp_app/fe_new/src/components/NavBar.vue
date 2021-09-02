@@ -4,9 +4,10 @@
   >
     <div @click="$router.push('/')">Vue 3</div>
     <div class="navbar__btns">
-      <button @click="$router.push('/')">Main page</button>
-      <button style="margin-left: 20px" @click="$router.push(`/game/${gameId}`)">Game
-      </button>
+      <a-button @click="$router.push('/')">Main page</a-button>
+      <a-button style="margin-left: 20px" @click="$router.push(`/game/${gameId}`)">
+        Game
+      </a-button>
     </div>
   </div>
 </template>
@@ -29,15 +30,13 @@ export default defineComponent({
 
 <style scoped>
 .navbar {
-  height: 50px;
-  background-color: lightgray;
-  box-shadow: 2px 2px 4px gray;
   display: flex;
   align-items: center;
   padding: 0 15px;
 }
 
 .navbar__btns {
-  margin-left: auto;
+  margin-left: 10px;
 }
+
 </style>

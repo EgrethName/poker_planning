@@ -1,44 +1,40 @@
 <template>
-  <div class="container header-intro">
-    <div class="row">
-      <nav-bar />
-      <div class="col-lg-4 col-sm-4">
-        <p class="text-general">Poker Planning</p>
-      </div>
-      <div class="col-lg-4 col-sm-2">
-      </div>
-      <div class="col-lg-4 col-sm-6">
-        <a-tooltip
-          :title="tooltipText"
-        >
-          <a-button
-            class="btn-intro"
-            disabled
-          >
-            Log In
-          </a-button>
-        </a-tooltip>
-        <a-tooltip
-          :title="tooltipText"
-        >
-          <a-button
-            class="btn-intro"
-            disabled
-          >
-            Sign Up
-          </a-button>
-        </a-tooltip>
-        <div class="btn-wrapper" >
-          <a-button
-            class="btn-intro"
-            @click="logout"
-          >
-            Log out
-          </a-button>
-        </div>
-      </div>
-      <!--      <LoginModal msg='Log In' />-->
+  <div class="header-intro">
+    <nav-bar/>
+    <div>
+      <p class="text-general">Poker Planning</p>
     </div>
+    <div
+      class="btns-login"
+    >
+      <a-tooltip
+        :title="tooltipText"
+      >
+        <a-button
+          class="btn"
+          disabled
+        >
+          Log In
+        </a-button>
+      </a-tooltip>
+      <a-tooltip
+        :title="tooltipText"
+      >
+        <a-button
+          class="btn"
+          disabled
+        >
+          Sign Up
+        </a-button>
+      </a-tooltip>
+      <a-button
+        class="btn"
+        @click="logout"
+      >
+        Log out
+      </a-button>
+    </div>
+    <!--      <LoginModal msg='Log In' />-->
   </div>
 </template>
 
@@ -74,25 +70,33 @@ export default defineComponent({
   scoped
 >
 
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
 .text-general {
   font-size: 30px;
   font-weight: 600;
-  margin: 0.3em;
+  margin: 0;
 }
 
 .header-intro {
+  display: flex;
   background-color: #E8EEF9;
-  margin-top: 20px;
-  margin-bottom: 20px;
 }
 
-.btn-intro {
+.btns-login {
+  margin-left: auto;
+}
+
+.btn {
   margin: 10px 10px 0 10px;
-
 }
 
-.btn-wrapper {
-  display: inline-block;
-}
+//
+//.btn-wrapper {
+//  display: inline-block;
+//}
 
 </style>
