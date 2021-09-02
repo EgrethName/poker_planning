@@ -4,8 +4,8 @@
   >
     <div @click="$router.push('/')">Vue 3</div>
     <div class="navbar__btns">
-      <a-button @click="$router.push('/')">Main page</a-button>
-      <a-button style="margin-left: 20px" @click="$router.push(`/game/${gameId}`)">
+      <a-button class="btn" @click="$router.push('/')">Main page</a-button>
+      <a-button class="btn" @click="$router.push(`/game/${gameId}`)">
         Game
       </a-button>
     </div>

@@ -77,21 +77,18 @@ export default defineComponent({
 
 .text-general {
   font-size: 30px;
-  font-weight: 600;
-  margin: 0;
+  font-weight: 400;
+  margin: 0.3em;
 }
 
 .header-intro {
   display: flex;
+  //color: white;
   background-color: #E8EEF9;
 }
 
 .btns-login {
   margin-left: auto;
-}
-
-.btn {
-  margin: 10px 10px 0 10px;
 }
 
 //

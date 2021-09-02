@@ -1,53 +1,90 @@
 html, body {
-    height:100%;
-    display: flex;
-    flex-direction: column;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important ;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
 }
 
 .wrapper {
-    background-color: #fff;
-    box-shadow: 0 0 20px 0 rgb(0 0 0 / 20%);
-    border-radius: 10px;
-    margin-bottom: 20px;
-    overflow: auto;
-    height: calc(var(--vh, 1vh)*83);
+  background-color: #fff;
+  box-shadow: 0 0 20px 0 rgb(0 0 0 / 20%);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  overflow: auto;
+  height: calc(var(--vh, 1vh) * 83);
 }
 
 #app {
-    background-color: #E8EEF9;
-    height: 100%;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important ;
+  background-color: #E8EEF9;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
 }
 
 .poker-footer {
-    position:absolute;
-    bottom:0;
-    width:100%;
-    background:#E8EEF9;
- }
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: #E8EEF9;
+}
 
- .fix-height {
-    height: 100%;
+@media (max-width: 480px) {
+  .container {
+    padding: 0 !important;
   }
+}
 
+.container {
+  padding: 20px 50px;
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+.btn {
+  margin: 10px 10px 0 10px;
+}
+
+.fix-height {
+  height: 100%;
+}
+
+.container .row {
+  /*border: 1px dotted grey;*/
+}
+
+.container .row.header {
+  flex: 0 1 auto;
+  /* The above is shorthand for:
+  flex-grow: 0,
+  flex-shrink: 1,
+  flex-basis: auto
+  */
+}
+
+.container .row.content {
+  flex: 1 1 auto;
+}
+
+.container .row.footer {
+  flex: 0 1 10px;
+}
 
 /* width */
 ::-webkit-scrollbar {
-    width: 4px;
+  width: 4px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-background: #f1f1f1;
+  background: #f1f1f1;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-background: #888;
+  background: #888;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-background: #555;
+  background: #555;
 }

@@ -1,15 +1,15 @@
 <template>
-  <a-layout>
-    <a-layout-header>
+  <div class="container" style="min-height: calc(var(--vh, 1vh)*100);">
+    <div class="row header">
       <Header />
-    </a-layout-header>
-    <a-layout-content>
-      KU
-    </a-layout-content>
-    <a-layout-footer>
+    </div>
+    <div class="row content">
+      <poker-start />
+    </div>
+    <div class="row footer">
       <Footer />
-    </a-layout-footer>
-  </a-layout>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -19,6 +19,7 @@ import { mapState } from 'vuex';
 import { State } from '@/store';
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
+import PokerStart from '@/components/PokerStart.vue';
 
 export default defineComponent({
   name: 'Home',
@@ -26,6 +27,7 @@ export default defineComponent({
   components: {
     Header,
     Footer,
+    PokerStart,
   },
 
   computed: {
