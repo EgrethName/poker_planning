@@ -2,7 +2,6 @@
   <div
     class="navbar"
   >
-    <div @click="$router.push('/')">Vue 3</div>
     <div class="navbar__btns">
       <a-button class="btn" @click="$router.push('/')">Main page</a-button>
       <a-button class="btn" @click="$router.push(`/game/${gameId}`)">

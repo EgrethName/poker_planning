@@ -1,7 +1,7 @@
 <template>
   <div class="header-intro">
     <nav-bar/>
-    <div>
+    <div @click="$router.push('/')">
       <p class="text-general">Poker Planning</p>
     </div>
     <div
