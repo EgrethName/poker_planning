@@ -20,7 +20,7 @@
 import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
 import { State } from '@/store';
-import CreateGame from '@/components/CreateGame.vue';
+import CreateGame from '@/components/Home/CreateGame.vue';
 
 export default defineComponent({
   name: 'PokerStart',

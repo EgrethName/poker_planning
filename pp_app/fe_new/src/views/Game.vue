@@ -1,5 +1,7 @@
 <template>
-  <poker-start />
+  <div>
+
+  </div>
 </template>
 
 <script lang="ts">
@@ -7,7 +9,6 @@
 import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
 import { State } from '@/store';
-import PokerStart from '@/components/PokerStart.vue';
 
 export default defineComponent({
   name: 'Game',

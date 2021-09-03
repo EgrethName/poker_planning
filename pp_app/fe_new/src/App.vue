@@ -14,8 +14,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Header from '@/components/Header.vue';
-import Footer from '@/components/Footer.vue';
+import Header from '@/components/Global/Header.vue';
+import Footer from '@/components/Global/Footer.vue';
 
 export default defineComponent({
   components: {

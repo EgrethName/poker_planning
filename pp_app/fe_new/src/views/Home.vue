@@ -7,7 +7,7 @@
 import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
 import { State } from '@/store';
-import PokerStart from '@/components/PokerStart.vue';
+import PokerStart from '@/components/Home/PokerStart.vue';
 
 export default defineComponent({
   name: 'Home',
