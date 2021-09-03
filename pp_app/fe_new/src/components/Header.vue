@@ -84,6 +84,7 @@ export default defineComponent({
 .header-intro {
   display: flex;
   //color: white;
+  flex-wrap: wrap;
   background-color: #E8EEF9;
 }
 
