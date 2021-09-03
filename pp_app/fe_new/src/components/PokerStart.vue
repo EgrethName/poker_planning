@@ -1,6 +1,7 @@
 <template>
   <div class="start-content">
     Content
+    <create-game />
   </div>
 </template>
 
@@ -9,10 +10,14 @@
 import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
 import { State } from '@/store';
+import CreateGame from '@/components/CreateGame.vue';
 
 export default defineComponent({
   name: 'PokerStart',
 
+  components: {
+    CreateGame,
+  },
   computed: {
     ...mapState({
       gameId: (state): string => (state as State).sessionId,
