@@ -1,11 +1,27 @@
 <template>
-  <router-view/>
+  <div class="wrapper container">
+    <div class="row header">
+      <Header />
+    </div>
+    <div class="row content">
+      <router-view/>
+    </div>
+    <div class="row footer">
+      <Footer />
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import Header from '@/components/Header.vue';
+import Footer from '@/components/Footer.vue';
 
 export default defineComponent({
+  components: {
+    Header,
+    Footer,
+  },
 });
 </script>
 
