@@ -6,12 +6,14 @@ html, body {
 }
 
 .wrapper {
-  background-color: #fff;
-  box-shadow: 0 0 20px 0 rgb(0 0 0 / 20%);
-  border-radius: 10px;
-  margin-bottom: 20px;
-  overflow: auto;
-  height: calc(var(--vh, 1vh) * 83);
+  /*background-color: #fff;*/
+  height: 100vh;
+  width: 928px;
+  margin: auto;
+  /*box-shadow: 0 0 20px 0 rgb(0 0 0 / 20%);*/
+  /*border-radius: 10px;*/
+  /*margin-bottom: 20px;*/
+  /*overflow: auto;*/
 }
 
 #app {
@@ -25,6 +27,22 @@ html, body {
   bottom: 0;
   width: 100%;
   background: #E8EEF9;
+}
+
+@media (max-width: 928px) {
+  .wrapper {
+    margin: auto;
+    width: unset;
+    padding: 0 50px;
+  }
+}
+
+@media (max-width: 800px) {
+  .wrapper {
+    margin: auto;
+    width: unset;
+    padding: 0 20px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -54,6 +72,7 @@ html, body {
 
 .container .row.header {
   flex: 0 1 auto;
+  margin-bottom: 20px;
   /* The above is shorthand for:
   flex-grow: 0,
   flex-shrink: 1,

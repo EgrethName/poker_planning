@@ -1,5 +1,5 @@
 <template>
-  <div class="container" style="min-height: calc(var(--vh, 1vh)*100);">
+  <div class="wrapper container">
     <div class="row header">
       <Header />
     </div>
