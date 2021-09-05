@@ -96,7 +96,7 @@ export default defineComponent({
     }
   },
   created() {
-    EventBus.$on('voteCompleted', () => {
+    EventBus.on('voteCompleted', () => {
       this.cleanInputPlaceholder();
     })
   }

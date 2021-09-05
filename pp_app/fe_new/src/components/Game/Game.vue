@@ -215,10 +215,10 @@ export default defineComponent({
   created() {
     this.$store.dispatch('activate');
     this.$store.dispatch('getSessionInfo');
-    EventBus.$on('voteStatsAvailable', msg => {
+    EventBus.on('voteStatsAvailable', msg => {
       this.showStatsModalFromData(msg);
     })
-    EventBus.$on('newVoteStarted', () => {
+    EventBus.on('newVoteStarted', () => {
       this.hideStatsModal();
     })
   }
