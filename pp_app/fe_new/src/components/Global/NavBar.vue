@@ -4,7 +4,7 @@
   >
     <div class="navbar__btns">
       <a-button class="btn" @click="$router.push('/')">Main page</a-button>
-      <a-button class="btn" @click="$router.push(`/game/${gameId}`)">
+      <a-button class="btn" @click="$router.push(`/game`)">
         Game
       </a-button>
     </div>

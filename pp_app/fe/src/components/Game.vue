@@ -12,7 +12,7 @@
         </div>
         <b-overlay
           id="overlay-background"
-          :show="!isVoteActive"
+          :show="isVoteActive"
           rounded="sm"
           opacity="1"
         >
@@ -151,6 +151,7 @@ export default {
     },
     processVote(vote) {
       this.$store.dispatch('sendVote', vote);
+      console.log(this.$refs);
       for (let card of this.$refs.cards) {
         if (card.value === vote) {
           card.isSelected = true;

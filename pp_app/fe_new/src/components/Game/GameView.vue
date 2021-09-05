@@ -1,73 +1,73 @@
 <template>
-  <div class="game-container container" id="game-box">
-    <div class="row game-header">
+  <div class='game-container container' id='game-box'>
+    <div class='row game-header'>
       <h2>{{ roomName }}</h2>
     </div>
-    <div class="row game-main">
-      <div class="col-lg-2">
+    <div class='row game-main'>
+      <div class='col-lg-2'>
       </div>
-      <div class="col-lg-4 card-box">
-        <div class="name-header">
+      <div class='col-lg-4 card-box'>
+        <div class='name-header'>
           <h3> You are logged as: {{ playerName }}</h3>
         </div>
-        <b-overlay
-          id="overlay-background"
-          :show="!isVoteActive"
-          rounded="sm"
-          opacity="1"
-        >
-          <div class="card-holder">
+<!--        <b-overlay-->
+<!--          id='overlay-background'-->
+<!--          :show='!isVoteActive'-->
+<!--          rounded='sm'-->
+<!--          opacity='1'-->
+<!--        >-->
+          <div class='card-holder'>
             <Card
-              ref="cards"
-              v-for="card in cardSet"
-              v-bind:key="card"
-              :value="card"
-              @voted="processVote"
+              :ref='setCardRefs'
+              v-for='card in cardSet'
+              v-bind:key='card'
+              :value='card'
+              @voted='processVote'
             />
           </div>
-          <template #overlay>
-            <div class="text-center">
-              <b-icon icon="stopwatch" font-scale="3" animation="fade"></b-icon>
-              <p id="cancel-label">Please, start a new vote</p>
-            </div>
-          </template>
-        </b-overlay>
-        <div class="invitation-link">
+<!--          <template #overlay>-->
+<!--            <div class='text-center'>-->
+<!--              <b-icon icon='stopwatch' font-scale='3' animation='fade'></b-icon>-->
+<!--              <p id='cancel-label'>Please, start a new vote</p>-->
+<!--            </div>-->
+<!--          </template>-->
+<!--        </b-overlay>-->
+        <div class='invitation-link'>
 <!--          <InvitationPanel-->
-<!--            :link="gameLink"-->
+<!--            :link='gameLink'-->
 <!--          />-->
         </div>
       </div>
-      <div class="col-lg-6 game-table-container">
+      <div class='col-lg-6 game-table-container'>
         <GameTable
-          @voteCompleted="showStatsModalFromData"
+          @voteCompleted='showStatsModalFromData'
         />
       </div>
       <InputNameModal
-        v-model="submitNameSuccess"
-        @clicked="enterTheGame"
-        ref="modalComponent"
+        v-model='submitNameSuccess'
+        @clicked='enterTheGame'
+        ref='modalComponent'
       />
       <CompletedVoteModal
-        ref="statsModal"
-        :stats="currentStats"
+        ref='statsModal'
+        :stats='currentStats'
       />
     </div>
-    <div class="row completed-votes">
-      <div class="col-lg-4"></div>
-      <div class="col-lg-4 col-sm-12">
+    <div class='row completed-votes'>
+      <div class='col-lg-4'></div>
+      <div class='col-lg-4 col-sm-12'>
         <p>Completed votes</p>
-        <div class="holder">
+        <div class='holder'>
           <CompletedVoteBadge
-            ref="completedVotes"
-            v-for="item in completedVotes"
-            v-bind:key="item.id"
-            :stats="item"
-            @clicked="showStatsModal"
+            ref='completedVotes'
+            v-for='item in completedVotes'
+            v-bind:key='item.id'
+            :stats='item'
+            @clicked='showStatsModal'
           />
         </div>
       </div>
-      <div class="col-lg-4"></div>
+      <div class='col-lg-4'></div>
     </div>
   </div>
 </template>
@@ -75,16 +75,16 @@
 <script>
 import { defineComponent } from 'vue';
 import cloneDeep from 'lodash/cloneDeep';
-import EventBus from '@/modules/eventBus';
 import { mapState } from 'vuex';
 import { xhr } from '@/modules/xhr';
 import socket from '@/modules/socketModule';
+import EventBus from '@/modules/eventBus';
 
-import Card from "@/components/Game/Card";
-import GameTable from "@/components/Game/GameTable";
-import InputNameModal from "@/components/Game/InputNameModal";
-import CompletedVoteModal from "@/components/Game/CompletedVoteModal";
-import CompletedVoteBadge from "@/components/Game/CompletedVoteBadge";
+import Card from '@/components/Game/Card.vue';
+import GameTable from '@/components/Game/GameTable.vue';
+import InputNameModal from '@/components/Game/InputNameModal.vue';
+import CompletedVoteModal from '@/components/Game/CompletedVoteModal.vue';
+import CompletedVoteBadge from '@/components/Game/CompletedVoteBadge.vue';
 // import InvitationPanel from '@/components/Game/InvitationPanel.vue';
 
 export default defineComponent({
@@ -106,6 +106,7 @@ export default defineComponent({
         votes: {},
         average: 0,
       },
+      cardRefs: [],
     };
   },
   props: {
@@ -116,7 +117,7 @@ export default defineComponent({
     InputNameModal,
     CompletedVoteModal,
     CompletedVoteBadge,
-    InvitationPanel,
+    // InvitationPanel,
   },
   computed: {
     cardSet() {
@@ -148,16 +149,19 @@ export default defineComponent({
         .catch(() => {
           this.showAlert();
           this.submitNameSuccess = false;
-        })
+        });
     },
     processVote(vote) {
       this.$store.dispatch('sendVote', vote);
-      for (let card of this.$refs.cards) {
+      console.log(this.$refs);
+      /* eslint-disable-next-line */
+      for (const card of this.cardRefs) {
         card.isSelected = card.value === vote;
       }
     },
     clearCardVotes() {
-      for (let card of this.$refs.cards) {
+      /* eslint-disable-next-line */
+      for (const card of this.cardRefs) {
         card.isSelected = false;
       }
     },
@@ -167,7 +171,8 @@ export default defineComponent({
     },
     showStatsModal(id) {
       let requestedStats = {};
-      for (let stats of this.completedVotes) {
+      /* eslint-disable-next-line */
+      for (const stats of this.completedVotes) {
         if (stats.id === id) {
           requestedStats = cloneDeep(stats);
           break;
@@ -180,8 +185,13 @@ export default defineComponent({
       this.$refs.statsModal.hide();
     },
     scrollToEnd() {
-      var container = document.getElementById("game-box");
+      const container = document.getElementById('game-box');
       container.scrollTop = container.scrollHeight - container.clientHeight;
+    },
+    setCardRefs(el) {
+      if (el) {
+        this.cardRefs.push(el);
+      }
     },
   },
   mounted() {
@@ -195,11 +205,11 @@ export default defineComponent({
         this.$refs.modalComponent.show();
       }
     });
-    this.$root.$on('shown', (collapseId, isJustShown) => {
-      if (isJustShown) {
-        this.scrollToEnd();
-      }
-    })
+    // this.$root.$on('shown', (collapseId, isJustShown) => {
+    //   if (isJustShown) {
+    //     this.scrollToEnd();
+    //   }
+    // });
   },
   watch: {
     isVoteActive(val) {
@@ -209,18 +219,24 @@ export default defineComponent({
     },
     completedVotes: {
       deep: true,
-    }
+    },
   },
   created() {
     this.$store.dispatch('activate');
     this.$store.dispatch('getSessionInfo');
-    EventBus.on('voteStatsAvailable', msg => {
+    EventBus.on('voteStatsAvailable', (msg) => {
       this.showStatsModalFromData(msg);
-    })
+    });
     EventBus.on('newVoteStarted', () => {
       this.hideStatsModal();
-    })
-  }
+    });
+  },
+  beforeUpdate() {
+    this.cardRefs = [];
+  },
+  updated() {
+    console.log(this.cardRefs);
+  },
 });
 </script>
 
