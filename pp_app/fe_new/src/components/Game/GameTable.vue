@@ -34,8 +34,8 @@
 
 <script>
 import { defineComponent } from 'vue';
-import EventBus from '@/modules/eventBus';
 import { mapState } from 'vuex';
+import EventBus from '@/modules/eventBus';
 
 import PlayerBadge from '@/components/Game/PlayerBadge.vue';
 
@@ -43,7 +43,7 @@ export default defineComponent({
   data() {
     return {
       inputState: null,
-    }
+    };
   },
   components: {
     PlayerBadge,
@@ -56,18 +56,18 @@ export default defineComponent({
       isVotingCompleted: (state) => state.isVoteCompleted,
     }),
     currentVoteTitle: {
-      get () {
+      get() {
         return this.$store.state.activeVoteTitle;
       },
-      set (value) {
+      set(value) {
         this.$store.commit('setActiveVoteTitle', value);
-      }
+      },
     },
   },
   methods: {
     processVoteButton() {
       if (this.isVoteActive) {
-        return this.endVote();
+        this.endVote();
       }
       this.startVote();
     },
@@ -89,17 +89,16 @@ export default defineComponent({
       if (this.currentVoteTitle) {
         this.inputState = true;
         this.$store.dispatch('startNewVote', this.currentVoteTitle);
-      }
-      else {
+      } else {
         this.inputState = false;
       }
-    }
+    },
   },
   created() {
     EventBus.on('voteCompleted', () => {
       this.cleanInputPlaceholder();
-    })
-  }
+    });
+  },
 });
 </script>
 
