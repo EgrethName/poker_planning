@@ -37,7 +37,7 @@ import { defineComponent } from 'vue';
 import EventBus from '@/modules/eventBus';
 import { mapState } from 'vuex';
 
-import PlayerBadge from '@/components/PlayerBadge.vue'
+import PlayerBadge from '@/components/Game/PlayerBadge.vue';
 
 export default defineComponent({
   data() {

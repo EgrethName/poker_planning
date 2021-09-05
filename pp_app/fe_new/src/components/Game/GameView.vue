@@ -33,9 +33,9 @@
           </template>
         </b-overlay>
         <div class="invitation-link">
-          <InvitationPanel
-            :link="gameLink"
-          />
+<!--          <InvitationPanel-->
+<!--            :link="gameLink"-->
+<!--          />-->
         </div>
       </div>
       <div class="col-lg-6 game-table-container">
@@ -80,12 +80,12 @@ import { mapState } from 'vuex';
 import { xhr } from '@/modules/xhr';
 import socket from '@/modules/socketModule';
 
-import Card from "@/components/Card";
-import GameTable from "@/components/GameTable";
-import InputNameModal from "@/components/InputNameModal";
-import CompletedVoteModal from "@/components/CompletedVoteModal";
-import CompletedVoteBadge from "@/components/CompletedVoteBadge";
-import InvitationPanel from '@/components/InvitationPanel.vue';
+import Card from "@/components/Game/Card";
+import GameTable from "@/components/Game/GameTable";
+import InputNameModal from "@/components/Game/InputNameModal";
+import CompletedVoteModal from "@/components/Game/CompletedVoteModal";
+import CompletedVoteBadge from "@/components/Game/CompletedVoteBadge";
+// import InvitationPanel from '@/components/Game/InvitationPanel.vue';
 
 export default defineComponent({
   name: 'GameView',

@@ -6,9 +6,8 @@
 </template>
 
 <script lang='ts'>
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-
+/* eslint-disable */
+// @ts-nocheck
 import { defineComponent } from 'vue';
 
 const d3 = require('d3');

@@ -23,7 +23,7 @@ export default defineComponent({
     };
   },
   computed: {
-    classList(): string {
+    classList(): string[] {
       return [this.isSelected ? this.selectedClass : '', this.basicClass];
     },
   },

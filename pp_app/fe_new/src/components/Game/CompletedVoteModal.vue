@@ -36,7 +36,7 @@
 
 <script>
 import { defineComponent } from 'vue';
-import PieChart from '@/components/PieChart';
+import PieChart from '@/components/Game/PieChart';
 
 export default defineComponent({
   components: { PieChart },
