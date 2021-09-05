@@ -22,7 +22,9 @@
         <div class="col-lg-6 col-sm-6 col-6 average-enjoyer">
           <h3> Distribution: </h3>
           <div v-if="Object.keys(countedMarks).length === 0">--</div>
-          <div v-else v-for="(value, name) in countedMarks" :key="name">{{ name }}: {{ value }} {{ voteDescr(value) }}</div>
+          <div v-else v-for="(value, name) in countedMarks" :key="name">
+            {{ name }}: {{ value }} {{ voteDescr(value) }}
+          </div>
         </div>
       </div>
       <div class="chart">
@@ -36,18 +38,18 @@
 
 <script>
 import { defineComponent } from 'vue';
-import PieChart from '@/components/Game/PieChart';
+import PieChart from '@/components/Game/PieChart.vue';
 
 export default defineComponent({
   components: { PieChart },
   data() {
     return {
       width: 200,
-      height: 200
-    }
+      height: 200,
+    };
   },
   props: {
-    stats: Object
+    stats: Object,
   },
   computed: {
     title() {
@@ -63,34 +65,29 @@ export default defineComponent({
       return Object.values(this.stats.votes);
     },
     votesAsList() {
-      const arr = Object.entries(this.votes)
-      return arr.map(a => {
-        return {
-          name: a[0], value: a[1]
-        }
-      })
+      const arr = Object.entries(this.votes);
+      return arr.map((a) => ({
+        name: a[0], value: a[1],
+      }));
     },
     countedMarks() {
-      let counter = {};
-      // eslint-disable-next-line no-unused-vars
+      const counter = {};
+      /* eslint-disable-next-line */
       for (const [key, value] of Object.entries(this.votes)) {
         if (value in counter) {
           counter[`${value}`] += 1;
-        }
-        else {
+        } else {
           counter[`${value}`] = 1;
         }
       }
-      return counter
+      return counter;
     },
     counterMarksAsList() {
-      const arr = Object.entries(this.countedMarks)
-      return arr.map(a => {
-        return {
-          name: a[0], value: a[1]
-        }
-      })
-    }
+      const arr = Object.entries(this.countedMarks);
+      return arr.map((a) => ({
+        name: a[0], value: a[1],
+      }));
+    },
   },
   methods: {
     show() {
@@ -100,9 +97,9 @@ export default defineComponent({
       this.$refs.modal.hide();
     },
     voteDescr(value) {
-      return value == '1' ? 'vote' : 'votes';
-    }
-  }
+      return value === '1' ? 'vote' : 'votes';
+    },
+  },
 });
 </script>
 
