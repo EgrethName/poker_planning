@@ -87,9 +87,8 @@ import CompletedVoteModal from "@/components/CompletedVoteModal";
 import CompletedVoteBadge from "@/components/CompletedVoteBadge";
 import InvitationPanel from '@/components/InvitationPanel.vue';
 
-
 export default defineComponent({
-  name: 'Game',
+  name: 'GameView',
   data() {
     return {
       name: '',
