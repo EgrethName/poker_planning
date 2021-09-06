@@ -27,7 +27,8 @@ export interface State {
 
 export default createStore<State>({
   state: {
-    playersList: ['Player1', 'Player2', 'Player3'],
+    playersList: ['Player1', 'Player2', 'Player3', 'Player1', 'Player2', 'Player3', 'Player1', 'Player2', 'Player3',
+      'Player1', 'Player2', 'Player3'],
     playerName: '',
     isVoteActive: false,
     isVoteCompleted: false,

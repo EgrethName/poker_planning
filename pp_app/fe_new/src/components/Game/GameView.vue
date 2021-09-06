@@ -1,12 +1,11 @@
 <template>
-  <div class='game-container container' id='game-box'>
+  <div class='game-container' id='game-box'>
     <div class='row game-header'>
       <h2>{{ roomName }}</h2>
     </div>
-    <div class='row game-main'>
-      <div class='col-lg-2'>
-      </div>
-      <div class='col-lg-4 card-box'>
+    <div class='game-main-box'>
+      <div></div>
+      <div class='card-box'>
         <div class='name-header'>
           <h3> You are logged as: {{ playerName }}</h3>
         </div>
@@ -38,20 +37,11 @@
 <!--          />-->
         </div>
       </div>
-      <div class='col-lg-6 game-table-container'>
+      <div class='game-table-container'>
         <GameTable
           @voteCompleted='showStatsModalFromData'
         />
       </div>
-      <InputNameModal
-        v-model='submitNameSuccess'
-        @clicked='enterTheGame'
-        ref='modalComponent'
-      />
-      <CompletedVoteModal
-        ref='statsModal'
-        :stats='currentStats'
-      />
     </div>
     <div class='row completed-votes'>
       <div class='col-lg-4'></div>
@@ -69,6 +59,15 @@
       </div>
       <div class='col-lg-4'></div>
     </div>
+    <InputNameModal
+      v-model='submitNameSuccess'
+      @clicked='enterTheGame'
+      ref='modalComponent'
+    />
+    <CompletedVoteModal
+      ref='statsModal'
+      :stats='currentStats'
+    />
   </div>
 </template>
 
@@ -247,12 +246,26 @@ export default defineComponent({
 
 .game-container {
   height: 100%;
+  background: #ffffff;
   /* overflow: auto; */
 }
 
-.game-main {
-  height: 75%;
-  overflow: auto;
+.game-main-box {
+  display: grid;
+  //grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 3fr 5fr;
+  grid-gap: 2vw;
+}
+
+@media (max-width: 850px) {
+  .game-main-box {
+    grid-template-columns: 1fr;
+    grid-gap: 2vw;
+  }
+
+  .game-table-container {
+    height: unset !important;
+  }
 }
 
 .game-header {
@@ -278,12 +291,14 @@ export default defineComponent({
   flex-wrap: wrap;
   justify-content: center;
   flex-shrink: 1;
+  max-width: 300px;
+  margin: auto;
 }
 
 .game-table-container {
-  height: 98%;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  //height: 98%;
+  margin: auto;
+  height: 600px;
 }
 
 .completed-votes {

@@ -113,6 +113,8 @@ export default defineComponent({
   padding: 15px;
   background-color: #E8EEF9;
   box-shadow: 0 0 6px 0 rgba($color: #000000, $alpha: 0.4);
+  min-height: 450px;
+  overflow: auto;
 }
 
 .input-name {
