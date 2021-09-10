@@ -74,6 +74,8 @@ $card-shadow: -2px -2px 5px 0px $point-light;
   align-items: center;
   flex-wrap: wrap;
   justify-content: center;
+  cursor: pointer;
+  outline: none;
 
   -webkit-box-shadow: $card-shadow;
   box-shadow: $card-shadow;
