@@ -1,64 +1,72 @@
 <template>
   <div class='game-container' id='game-box'>
-    <div class='row game-header'>
-      <h2>{{ roomName }}</h2>
-    </div>
-    <div class='game-main-box'>
-      <div></div>
-      <div class='card-box'>
-        <div class='name-header'>
-          <h3> You are logged as: {{ playerName }}</h3>
+    <a-tabs
+      v-model:activeKey="activeKey"
+    >
+      <a-tab-pane key="1" tab="Game">
+        <div class='row game-header'>
+          <h2>{{ roomName }}</h2>
         </div>
-<!--        <b-overlay-->
-<!--          id='overlay-background'-->
-<!--          :show='!isVoteActive'-->
-<!--          rounded='sm'-->
-<!--          opacity='1'-->
-<!--        >-->
-          <div class='card-holder'>
-            <Card
-              :ref='setCardRefs'
-              v-for='card in cardSet'
-              v-bind:key='card'
-              :value='card'
-              @voted='processVote'
+        <div class='game-main-box'>
+          <div></div>
+          <div class='card-box'>
+            <div class='name-header'>
+              <h3> You are logged as: {{ playerName }}</h3>
+            </div>
+            <!--        <b-overlay-->
+            <!--          id='overlay-background'-->
+            <!--          :show='!isVoteActive'-->
+            <!--          rounded='sm'-->
+            <!--          opacity='1'-->
+            <!--        >-->
+            <div class='card-holder'>
+              <Card
+                :ref='setCardRefs'
+                v-for='card in cardSet'
+                v-bind:key='card'
+                :value='card'
+                @voted='processVote'
+              />
+            </div>
+            <!--          <template #overlay>-->
+            <!--            <div class='text-center'>-->
+            <!--              <b-icon icon='stopwatch' font-scale='3' animation='fade'></b-icon>-->
+            <!--              <p id='cancel-label'>Please, start a new vote</p>-->
+            <!--            </div>-->
+            <!--          </template>-->
+            <!--        </b-overlay>-->
+            <div class='invitation-link'>
+              <!--          <InvitationPanel-->
+              <!--            :link='gameLink'-->
+              <!--          />-->
+            </div>
+          </div>
+          <div class='game-table-container'>
+            <GameTable
+              @voteCompleted='showStatsModalFromData'
             />
           </div>
-<!--          <template #overlay>-->
-<!--            <div class='text-center'>-->
-<!--              <b-icon icon='stopwatch' font-scale='3' animation='fade'></b-icon>-->
-<!--              <p id='cancel-label'>Please, start a new vote</p>-->
-<!--            </div>-->
-<!--          </template>-->
-<!--        </b-overlay>-->
-        <div class='invitation-link'>
-<!--          <InvitationPanel-->
-<!--            :link='gameLink'-->
-<!--          />-->
         </div>
-      </div>
-      <div class='game-table-container'>
-        <GameTable
-          @voteCompleted='showStatsModalFromData'
-        />
-      </div>
-    </div>
-    <div class='row completed-votes'>
-      <div class='col-lg-4'></div>
-      <div class='col-lg-4 col-sm-12'>
-        <p>Completed votes</p>
-        <div class='holder'>
-          <CompletedVoteBadge
-            ref='completedVotes'
-            v-for='item in completedVotes'
-            v-bind:key='item.id'
-            :stats='item'
-            @clicked='showStatsModal'
-          />
+      </a-tab-pane>
+      <a-tab-pane key="2" tab="Votes" force-render>
+        <div class='row completed-votes'>
+          <div class='col-lg-4'></div>
+          <div class='col-lg-4 col-sm-12'>
+            <p>Completed votes</p>
+            <div class='holder'>
+              <CompletedVoteBadge
+                ref='completedVotes'
+                v-for='item in completedVotes'
+                v-bind:key='item.id'
+                :stats='item'
+                @clicked='showStatsModal'
+              />
+            </div>
+          </div>
+          <div class='col-lg-4'></div>
         </div>
-      </div>
-      <div class='col-lg-4'></div>
-    </div>
+      </a-tab-pane>
+    </a-tabs>
     <InputNameModal
       v-model='submitNameSuccess'
       @clicked='enterTheGame'
@@ -106,6 +114,7 @@ export default defineComponent({
         average: 0,
       },
       cardRefs: [],
+      activeKey: '1',
     };
   },
   props: {
