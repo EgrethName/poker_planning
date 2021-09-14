@@ -98,20 +98,20 @@ export default createStore<State>({
   },
   actions: {
     getAllPlayers({ commit, state }) {
-      xhr.get(`/${state.sessionId}/users`)
+      xhr.get(`game/${state.sessionId}/users`)
         .then(({ data }) => {
           commit('setPlayersList', data.session_users);
         });
     },
     getAllVotes({ commit, state }) {
-      xhr.get(`${state.sessionId}/current_votes`)
+      xhr.get(`game/${state.sessionId}/current_votes`)
         .then(({ data }) => {
           commit('setVotes', data);
         });
     },
     endVote({ commit, state }) {
       return new Promise((resolve, reject) => {
-        xhr.post(`${state.sessionId}/end_vote`)
+        xhr.post(`game/${state.sessionId}/end_vote`)
           .then(({ data }) => {
             commit('setVoteActive', false);
             commit('setVoteCompleted', true);
@@ -121,7 +121,7 @@ export default createStore<State>({
       });
     },
     sendVote({ commit, state, dispatch }, payload) {
-      xhr.post(`${state.sessionId}/vote`, {
+      xhr.post(`game/${state.sessionId}/vote`, {
         user_name: state.playerName,
         vote_value: payload,
       })
@@ -131,7 +131,7 @@ export default createStore<State>({
         });
     },
     startNewVote({ commit, state }, payload) {
-      xhr.post(`${state.sessionId}/new_vote`, {
+      xhr.post(`game/${state.sessionId}/new_vote`, {
         title: payload,
       })
         .then(() => {
@@ -145,7 +145,7 @@ export default createStore<State>({
         });
     },
     getSessionInfo({ commit, state, dispatch }) {
-      xhr.get(`${state.sessionId}/info`)
+      xhr.get(`game/${state.sessionId}/info`)
         .then(({ data }) => {
           commit('setRoomName', data.session_name);
           // commit('setSessionId', data.session_id);

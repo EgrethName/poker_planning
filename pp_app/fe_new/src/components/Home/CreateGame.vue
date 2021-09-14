@@ -93,10 +93,10 @@ export default defineComponent({
       formRef.value
         .validate()
         .then(() => store.dispatch('sendCreateGame', formState.name))
-        .then(() => {
+        .then((id: string) => {
           visible.value = false;
           resetForm();
-          router.push('/game');
+          router.push(`/game/${id}`);
         })
         .catch((error: ValidateErrorEntity<FormState>) => {
           console.log('error', error);
