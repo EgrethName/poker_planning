@@ -148,7 +148,7 @@ export default createStore<State>({
       xhr.get(`${state.sessionId}/info`)
         .then(({ data }) => {
           commit('setRoomName', data.session_name);
-          commit('setSessionId', data.session_id);
+          // commit('setSessionId', data.session_id);
           commit('setPlayersList', data.session_users);
           commit('setInitialCompletedVotes', data.completed_votes);
 
@@ -161,6 +161,22 @@ export default createStore<State>({
         .catch((response): void => {
           console.log('session info error', response);
         });
+    },
+    sendCreateGame({ commit, state, dispatch }, name: string) {
+      return new Promise((resolve, reject) => {
+        xhr.post('/new_game', {
+          game_name: name,
+        })
+          .then((response) => {
+            console.log('resp', response);
+            commit('setSessionId', response.data.id);
+            resolve(response.data.id);
+          })
+          .catch((e) => {
+            console.log('zxczxcxzc');
+            reject();
+          });
+      });
     },
     activate({ commit }) {
       socket.on('got_new_vote', (msg: unknown) => {

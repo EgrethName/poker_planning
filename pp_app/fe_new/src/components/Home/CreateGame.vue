@@ -34,7 +34,6 @@
 </template>
 
 <script lang="ts">
-// import { baseUrl, xhr } from '@/modules/xhr';
 import {
   defineComponent,
   reactive,
@@ -42,8 +41,10 @@ import {
   toRaw,
   UnwrapRef,
 } from 'vue';
+import { useStore } from 'vuex';
 import { notification } from 'ant-design-vue';
 import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface';
+import { xhr } from '@/modules/xhr';
 
 interface FormState {
   name: string;
@@ -57,6 +58,7 @@ export default defineComponent({
     const formState: UnwrapRef<FormState> = reactive({
       name: '',
     });
+    const store = useStore();
 
     const openNotification = () => {
       notification.error({
@@ -85,12 +87,15 @@ export default defineComponent({
     const resetForm = () => {
       formRef.value.resetFields();
     };
+
     const onSubmit = (e: MouseEvent) => {
       console.log(e);
       formRef.value
         .validate()
         .then(() => {
-          console.log('values', formState, toRaw(formState));
+          return store.dispatch('sendCreateGame', formState.name);
+        })
+        .then(() => {
           visible.value = false;
           resetForm();
         })
