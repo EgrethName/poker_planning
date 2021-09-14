@@ -38,13 +38,12 @@ import {
   defineComponent,
   reactive,
   ref,
-  toRaw,
   UnwrapRef,
 } from 'vue';
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 import { notification } from 'ant-design-vue';
 import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface';
-import { xhr } from '@/modules/xhr';
 
 interface FormState {
   name: string;
@@ -59,12 +58,13 @@ export default defineComponent({
       name: '',
     });
     const store = useStore();
+    const router = useRouter();
 
     const openNotification = () => {
       notification.error({
-        message: 'Notification Title',
+        message: 'Failed to create a new game',
         description:
-          'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+          'Something went wrong with the server answer.',
         onClick: () => {
           console.log('Notification Clicked!');
         },
@@ -92,12 +92,11 @@ export default defineComponent({
       console.log(e);
       formRef.value
         .validate()
-        .then(() => {
-          return store.dispatch('sendCreateGame', formState.name);
-        })
+        .then(() => store.dispatch('sendCreateGame', formState.name))
         .then(() => {
           visible.value = false;
           resetForm();
+          router.push('/game');
         })
         .catch((error: ValidateErrorEntity<FormState>) => {
           console.log('error', error);
