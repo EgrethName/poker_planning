@@ -1,6 +1,6 @@
-import { io } from 'socket.io-client';
+import ioclient from 'socket.io-client';
 import host from '@/modules/hostResolver';
 
-const socket = io(`https://${host}`);
+const socket = ioclient(`http://${host}`);
 
 export default socket;
