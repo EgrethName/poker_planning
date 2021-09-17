@@ -4,13 +4,13 @@
       v-bind:class="[basicClass, stateClass]"
     >
       {{ name }}
-      <a-icon
-        icon="arrow-clockwise"
-        animation="spin"
-        font-scale="1"
-        class="icon-player"
-        v-if="isPending"
-      ></a-icon>
+<!--      <a-icon-->
+<!--        icon="arrow-clockwise"-->
+<!--        animation="spin"-->
+<!--        font-scale="1"-->
+<!--        class="icon-player"-->
+<!--        v-if="isPending"-->
+<!--      ></a-icon>-->
     </div>
     <div
       class="mark-holder"

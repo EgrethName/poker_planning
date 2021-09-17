@@ -23,6 +23,7 @@ export interface State {
   roomName: string,
   activeVoteTitle: string,
   gameLink: string,
+  nameResolveSuccess: boolean,
 }
 
 export default createStore<State>({
@@ -44,6 +45,7 @@ export default createStore<State>({
     completedVotes: [],
     roomName: '',
     activeVoteTitle: '',
+    nameResolveSuccess: false,
     gameLink: window.location.href,
   },
   mutations: {
@@ -173,7 +175,24 @@ export default createStore<State>({
             resolve(response.data.id);
           })
           .catch((e) => {
-            console.log('zxczxcxzc');
+            console.log('failed to create');
+            reject();
+          });
+      });
+    },
+    enterGame({ commit, state, dispatch }, name) {
+      return new Promise((resolve, reject) => {
+        xhr.post(`game/${state.sessionId}/join_game`, {
+          user_name: name,
+          ws_sid: state.wsSessionId,
+        })
+          .then(() => {
+            localStorage.name = name;
+            commit('setPlayerName', name);
+            dispatch('getAllPlayers');
+            resolve(name);
+          })
+          .catch(() => {
             reject();
           });
       });

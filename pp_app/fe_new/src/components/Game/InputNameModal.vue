@@ -1,19 +1,20 @@
 <template>
-  <div class="input-name">
-
-    <a-modal
-      id="modal-prevent-closing"
-      ref="modal"
-      title="Create a new game"
-      v-model:visible="visible"
-      @show="resetForm"
-      @hidden="resetForm"
-      @ok="onSubmit"
-      @cancel="resetForm"
-      ok-title="Create!"
-      cancel-variant="dark"
-      centered
-    >
+  <div
+    class="input-name"
+  >
+<!--    <a-modal-->
+<!--      id="modal-prevent-closing"-->
+<!--      ref="modalInputName"-->
+<!--      title="Enter your name"-->
+<!--      v-model:visible="visible"-->
+<!--      @show="resetForm"-->
+<!--      @hidden="resetForm"-->
+<!--      @ok="onSubmit"-->
+<!--      @cancel="resetForm"-->
+<!--      ok-title="Create!"-->
+<!--      cancel-variant="dark"-->
+<!--      centered-->
+<!--    >-->
       <a-form
         ref="formRef"
         :model="formState"
@@ -28,17 +29,25 @@
           <a-input v-model:value="formState.name"/>
         </a-form-item>
       </a-form>
-    </a-modal>
+<!--      <template #footer>-->
+<!--        <a-button key="back" @click="handleCancel">Return</a-button>-->
+<!--        <a-button-->
+<!--          key="submit"-->
+<!--          type="primary"-->
+<!--          :loading="loading"-->
+<!--          @click="handleOk">Submit</a-button>-->
+<!--      </template>-->
   </div>
 </template>
 
 <script lang="ts">
-// import { baseUrl, xhr } from '@/modules/xhr';
 import {
   defineComponent,
   reactive,
   ref,
   toRaw,
+  toRefs,
+  watch,
   UnwrapRef,
 } from 'vue';
 import { notification } from 'ant-design-vue';
@@ -49,13 +58,19 @@ interface FormState {
 }
 
 export default defineComponent({
-  name: 'CreateGame',
-  setup() {
+  name: 'InputNameModal',
+  props: {
+    modelName: {
+      type: Object,
+    },
+  },
+  setup(props, context) {
     const formRef = ref();
-    const visible = ref(false);
     const formState: UnwrapRef<FormState> = reactive({
       name: '',
     });
+    const { modelName } = toRefs(props);
+    const valid = ref(false);
 
     const openNotification = () => {
       notification.error({
@@ -74,28 +89,52 @@ export default defineComponent({
           required: true, message: 'Please input Game name', trigger: 'blur',
         },
         {
-          min: 3, max: 20, message: 'Length should be 3 to 5', trigger: 'blur',
+          min: 3, max: 20, message: 'Length should be 3 to 20', trigger: 'blur',
         },
       ],
     };
-    const showModal = () => {
-      visible.value = true;
-    };
+    // const form: WritableComputedRef<boolean> = computed({
+    //   get(): boolean {
+    //     return modalVisible.value;
+    //   },
+    //   set(newValue: boolean): void {
+    //     console.log('set visible', newValue);
+    //     context.emit('update:modalVisible', newValue);
+    //   },
+    // });
     const resetForm = () => {
       formRef.value.resetFields();
     };
-    const onSubmit = (e: MouseEvent) => {
-      console.log(e);
+    watch(() => formState.name, (newValue) => {
       formRef.value
         .validate()
         .then(() => {
           console.log('values', formState, toRaw(formState));
-          visible.value = false;
+          valid.value = true;
+        })
+        .catch(() => { valid.value = false; })
+        .finally(() => {
+          console.log(valid.value);
+          console.log(modelName);
+          context.emit('update:modelName', {
+            name: newValue,
+            valid: valid.value,
+          });
+        });
+    });
+    const onSubmit = (e: MouseEvent) => {
+      console.log(e);
+      formRef.value
+        .validate()
+        // .then(() => store.dispatch('enterGame', formState.name))
+        .then(() => {
+          console.log('values', formState, toRaw(formState));
+          context.emit('clicked', formState.name);
           resetForm();
         })
         .catch((error: ValidateErrorEntity<FormState>) => {
           console.log('error', error);
-          openNotification();
+          // openNotification();
         });
     };
 
@@ -108,8 +147,6 @@ export default defineComponent({
       rules,
       onSubmit,
       resetForm,
-      visible,
-      showModal,
       openNotification,
     };
   },

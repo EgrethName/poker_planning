@@ -67,15 +67,34 @@
         </div>
       </a-tab-pane>
     </a-tabs>
-    <InputNameModal
-      v-model='submitNameSuccess'
-      @clicked='enterTheGame'
-      ref='modalComponent'
-    />
-    <CompletedVoteModal
-      ref='statsModal'
-      :stats='currentStats'
-    />
+    <a-modal
+      ref="modalInputName"
+      title="Enter your name"
+      v-model:visible="nameModalVisible"
+      @show="resetNameForm"
+      @hidden="resetNameForm"
+      @ok="onSubmitName"
+      @cancel="resetNameForm"
+      ok-title="Create!"
+      cancel-variant="dark"
+      centered
+    >
+      <InputNameModal
+        v-model:model-name="nameFormState"
+      />
+    </a-modal>
+    <a-modal
+      ref="modalCompletedVotes"
+      title=""
+      v-model:visible="complModalVisible"
+      @ok="complModalVisible = false"
+      centered
+    >
+      <CompletedVoteModal
+        ref='statsModal'
+        :stats='currentStats'
+      />
+    </a-modal>
   </div>
 </template>
 
@@ -98,7 +117,7 @@ export default defineComponent({
   name: 'GameView',
   data() {
     return {
-      name: '',
+      // name: '',
       players: [],
       flags: {
         isVoteDone: false,
@@ -115,6 +134,12 @@ export default defineComponent({
       },
       cardRefs: [],
       activeKey: '1',
+      nameModalVisible: false,
+      nameFormState: {
+        name: '',
+        valid: false,
+      },
+      complModalVisible: false,
     };
   },
   props: {
@@ -144,21 +169,36 @@ export default defineComponent({
   },
   methods: {
     enterTheGame(name) {
-      xhr.post(`/${this.sessionId}/join_game`, {
-        user_name: name,
-        ws_sid: this.wsSessionId,
-      })
+      this.$store.dispatch('enterGame', name)
         .then(() => {
           this.submitNameSuccess = true;
           localStorage.name = name;
           this.$store.commit('setPlayerName', name);
           this.$store.dispatch('getAllPlayers');
+          this.nameModalVisible = false;
         })
         .catch(() => {
-          this.showAlert();
+          // this.showAlert();
           this.submitNameSuccess = false;
+          this.$router.push('/');
+        })
+        .finally(() => {
+          this.resetNameForm();
         });
     },
+    resetNameForm() {
+      this.nameFormState = {
+        name: '',
+        valid: false,
+      };
+    },
+    onSubmitName() {
+      if (!this.nameFormState.valid) {
+        return;
+      }
+      this.enterTheGame(this.nameFormState.name);
+    },
+
     processVote(vote) {
       this.$store.dispatch('sendVote', vote);
       console.log(this.$refs);
@@ -175,7 +215,7 @@ export default defineComponent({
     },
     showStatsModalFromData(stats) {
       this.currentStats = cloneDeep(stats);
-      this.$refs.statsModal.show();
+      this.complModalVisible = true;
     },
     showStatsModal(id) {
       let requestedStats = {};
@@ -187,10 +227,10 @@ export default defineComponent({
         }
       }
       this.currentStats = requestedStats;
-      this.$refs.statsModal.show();
+      this.complModalVisible = true;
     },
     hideStatsModal() {
-      this.$refs.statsModal.hide();
+      this.complModalVisible = false;
     },
     scrollToEnd() {
       const container = document.getElementById('game-box');
@@ -205,12 +245,15 @@ export default defineComponent({
   mounted() {
     socket.on('connect', () => {
       this.$store.commit('setWSSessionId', socket.id);
-
       if (localStorage.name) {
         this.$store.commit('setPlayerName', localStorage.name);
-        this.enterTheGame(localStorage.name);
+        this.$store.dispatch('enterGame', localStorage.name);
+        this.submitNameSuccess = true;
+        this.nameModalVisible = false;
       } else {
-        this.$refs.modalComponent.show();
+        this.submitNameSuccess = false;
+        this.nameModalVisible = true;
+        // this.$refs.modalComponent.show();
       }
     });
     // this.$root.$on('shown', (collapseId, isJustShown) => {
@@ -233,6 +276,7 @@ export default defineComponent({
     this.$store.dispatch('activate');
     this.$store.dispatch('getSessionInfo');
     EventBus.on('voteStatsAvailable', (msg) => {
+      console.log('asdsad');
       this.showStatsModalFromData(msg);
     });
     EventBus.on('newVoteStarted', () => {

@@ -1,38 +1,27 @@
 <template>
   <div>
-    <a-modal
-      id="modal-center"
-      centered
-      :title="title"
-      ref="modal"
-      ok-only
-      size="md"
-      scrollable
-      content-class="modal-stats-content"
-    >
-      <div class="average-fan">
-        <p class="my-4">Average: {{ average }}</p>
+    <div class="average-fan modal-stats-content">
+      <p class="my-4">Average: {{ average }}</p>
+    </div>
+    <div class="row">
+      <div class="col-lg-6 col-sm-6 col-6 average-enjoyer border-right">
+        <h3> Votes: </h3>
+        <div v-if="Object.keys(votes).length === 0">--</div>
+        <div v-else v-for="(value, name) in votes" :key="name">{{ name }}: {{ value }}</div>
       </div>
-      <div class="row">
-        <div class="col-lg-6 col-sm-6 col-6 average-enjoyer border-right">
-          <h3> Votes: </h3>
-          <div v-if="Object.keys(votes).length === 0">--</div>
-          <div v-else v-for="(value, name) in votes" :key="name">{{ name }}: {{ value }}</div>
-        </div>
-        <div class="col-lg-6 col-sm-6 col-6 average-enjoyer">
-          <h3> Distribution: </h3>
-          <div v-if="Object.keys(countedMarks).length === 0">--</div>
-          <div v-else v-for="(value, name) in countedMarks" :key="name">
-            {{ name }}: {{ value }} {{ voteDescr(value) }}
-          </div>
+      <div class="col-lg-6 col-sm-6 col-6 average-enjoyer">
+        <h3> Distribution: </h3>
+        <div v-if="Object.keys(countedMarks).length === 0">--</div>
+        <div v-else v-for="(value, name) in countedMarks" :key="name">
+          {{ name }}: {{ value }} {{ voteDescr(value) }}
         </div>
       </div>
-      <div class="chart">
-        <PieChart
-          :data="counterMarksAsList"
-        />
-      </div>
-    </a-modal>
+    </div>
+    <div class="chart">
+      <PieChart
+        :data="counterMarksAsList"
+      />
+    </div>
   </div>
 </template>
 
