@@ -78,7 +78,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .container .row.header {
   flex: 0 1 auto;
-  margin-bottom: 20px;
+  /*margin-bottom: 20px;*/
   /* The above is shorthand for:
   flex-grow: 0,
   flex-shrink: 1,

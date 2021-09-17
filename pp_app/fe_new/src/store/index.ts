@@ -24,6 +24,7 @@ export interface State {
   activeVoteTitle: string,
   gameLink: string,
   nameResolveSuccess: boolean,
+  gameEntered: boolean
 }
 
 export default createStore<State>({
@@ -47,6 +48,7 @@ export default createStore<State>({
     activeVoteTitle: '',
     nameResolveSuccess: false,
     gameLink: window.location.href,
+    gameEntered: false,
   },
   mutations: {
     setSessionId: (state, id) => {
@@ -96,7 +98,9 @@ export default createStore<State>({
     setWSSessionId: (state, id) => {
       state.wsSessionId = id;
     },
-
+    setGameEntered: (state, value) => {
+      state.gameEntered = value;
+    },
   },
   actions: {
     getAllPlayers({ commit, state }) {
@@ -165,6 +169,7 @@ export default createStore<State>({
         });
     },
     sendCreateGame({ commit, state, dispatch }, name: string) {
+      commit('setGameEntered', false);
       return new Promise((resolve, reject) => {
         xhr.post('/new_game', {
           game_name: name,
@@ -189,6 +194,7 @@ export default createStore<State>({
           .then(() => {
             localStorage.name = name;
             commit('setPlayerName', name);
+            commit('setGameEntered', true);
             dispatch('getAllPlayers');
             resolve(name);
           })

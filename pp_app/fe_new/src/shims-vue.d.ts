@@ -9,9 +9,12 @@ declare module '*.vue' {
   export default component
 }
 
-// declare module '@vue/runtime-core' {
-//   // Declare your own store states.
-//   interface ComponentCustomProperties {
-//     $store: Store<State>
-//   }
-// }
+declare module '@vue/runtime-core' {
+  interface State {
+    count: number
+  }
+  // Declare your own store states.
+  interface ComponentCustomProperties {
+    $store: Store<State>
+  }
+}

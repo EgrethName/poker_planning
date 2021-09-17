@@ -165,6 +165,7 @@ export default defineComponent({
       isVoteActive: (state) => state.isVoteActive,
       lastVoteResults: (state) => state.voteStatistics,
       gameLink: (state) => state.gameLink,
+      gameEntered: (state) => state.gameEntered,
     }),
   },
   methods: {
@@ -243,9 +244,8 @@ export default defineComponent({
     },
   },
   mounted() {
-    socket.on('connect', () => {
-      this.$store.commit('setWSSessionId', socket.id);
-      if (localStorage.name) {
+    const joinGame = () => {
+      if (localStorage.name && !this.gameEntered) {
         this.$store.commit('setPlayerName', localStorage.name);
         this.$store.dispatch('enterGame', localStorage.name);
         this.submitNameSuccess = true;
@@ -253,9 +253,16 @@ export default defineComponent({
       } else {
         this.submitNameSuccess = false;
         this.nameModalVisible = true;
-        // this.$refs.modalComponent.show();
       }
+    };
+    console.log('mntd');
+    socket.on('connect', () => {
+      this.$store.commit('setWSSessionId', socket.id);
+      joinGame();
     });
+    if (!this.gameEntered && socket.id) {
+      joinGame();
+    }
     // this.$root.$on('shown', (collapseId, isJustShown) => {
     //   if (isJustShown) {
     //     this.scrollToEnd();
@@ -368,6 +375,7 @@ export default defineComponent({
   .holder {
     display: flex;
     flex-direction: column;
+    padding: 20px;
   }
 }
 

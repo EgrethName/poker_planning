@@ -121,6 +121,7 @@ export default defineComponent({
 .average-enjoyer {
   padding-left: 30px;
   font-size: 19px;
+  margin-bottom: 10px;
 
   h3 {
     font-weight: 500;

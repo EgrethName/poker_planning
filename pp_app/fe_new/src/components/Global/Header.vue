@@ -1,6 +1,5 @@
 <template>
   <div class="header-intro">
-    <nav-bar/>
     <div @click="$router.push('/')">
       <p class="text-general">Poker Planning</p>
     </div>
@@ -36,6 +35,7 @@
     </div>
     <!--      <LoginModal msg='Log In' />-->
   </div>
+  <nav-bar/>
 </template>
 
 <script lang="ts">
