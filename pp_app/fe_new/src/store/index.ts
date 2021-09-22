@@ -231,6 +231,10 @@ export default createStore<State>({
         EventBus.emit('voteStatsAvailable', msg);
         EventBus.emit('voteCompleted');
       });
+
+      socket.on('connect', () => {
+        commit('setWSSessionId', socket.id);
+      });
     },
     resolveAfter2Seconds() {
       return new Promise((resolve) => {

@@ -104,6 +104,8 @@ export default defineComponent({
         });
     };
 
+    store.dispatch('activate');
+
     return {
       formRef,
       labelCol: { span: 4 },
