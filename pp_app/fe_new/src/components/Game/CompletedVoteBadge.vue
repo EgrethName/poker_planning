@@ -10,25 +10,25 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, toRefs } from 'vue';
 
 export default defineComponent({
   name: 'CompletedVoteBadge',
   props: {
     stats: Object,
   },
-  computed: {
-    title() {
-      return this.stats.title;
-    },
-    id() {
-      return this.stats.id;
-    },
-  },
-  methods: {
-    onClick() {
-      this.$emit('clicked', this.id);
-    },
+  setup(props, context) {
+    const { title, id } = toRefs(props);
+
+    const onClick = () => {
+      context.emit('clicked', id);
+    };
+
+    return {
+      title,
+      id,
+      onClick,
+    };
   },
 });
 </script>
