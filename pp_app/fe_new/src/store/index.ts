@@ -204,6 +204,8 @@ export default createStore<State>({
       });
     },
     activate({ commit }) {
+      commit('setWSSessionId', socket.id);
+
       socket.on('got_new_vote', (msg: unknown) => {
         commit('setVotes', msg);
       });
