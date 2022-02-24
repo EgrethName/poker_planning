@@ -1,14 +1,14 @@
 <template>
   <div>
-    <b-modal 
-      id="modal-center" 
-      centered 
-      :title="title"
-      ref="modal"
-      ok-only
-      size="md"
-      scrollable
-      content-class="modal-stats-content"
+    <b-modal
+        id="modal-center"
+        centered
+        :title="title"
+        ref="modal"
+        ok-only
+        size="md"
+        scrollable
+        content-class="modal-stats-content"
     >
       <div class="average-fan">
         <p class="my-4">Average: {{ average }}</p>
@@ -21,13 +21,13 @@
         </div>
         <div class="col-lg-6 col-sm-6 col-6 average-enjoyer">
           <h3> Distribution: </h3>
-          <div v-if="Object.keys(countedMarks).length === 0">--</div>
+          <div v-if="countedMarksLen === 0">--</div>
           <div v-else v-for="(value, name) in countedMarks" :key="name">{{ name }}: {{ value }} {{ voteDescr(value) }}</div>
         </div>
       </div>
       <div class="chart">
-        <PieChart 
-          :data="counterMarksAsList"
+        <PieChart
+            :data="counterMarksAsList"
         />
       </div>
     </b-modal>
@@ -35,7 +35,11 @@
 </template>
 
 <script>
+import Vue from 'vue';
+import VueConfetti from 'vue-confetti'
 import PieChart from '@/components/PieChart';
+
+Vue.use(VueConfetti);
 
 export default {
   components: { PieChart },
@@ -76,12 +80,18 @@ export default {
       for (const [key, value] of Object.entries(this.votes)) {
         if (value in counter) {
           counter[`${value}`] += 1;
-        }
-        else {
+        } else {
           counter[`${value}`] = 1;
         }
       }
       return counter
+    },
+    countedMarksLen() {
+      const len = Object.keys(this.countedMarks).length;
+      if (len === 1) {
+        this.triggerConfetti();
+      }
+      return len;
     },
     counterMarksAsList() {
       const arr = Object.entries(this.countedMarks)
@@ -101,13 +111,18 @@ export default {
     },
     voteDescr(value) {
       return value == '1' ? 'vote' : 'votes';
-    }
-  }
+    },
+    async triggerConfetti() {
+      this.$confetti.start();
+      await new Promise(r => setTimeout(r, 2000));
+      this.$confetti.stop();
+    },
+  },
 }
 </script>
 
 <style
-  lang="scss"
+    lang="scss"
 >
 
 .average-fan {
