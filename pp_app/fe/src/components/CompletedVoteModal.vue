@@ -57,7 +57,7 @@ export default {
       return this.stats.title ? this.stats.title : '';
     },
     average() {
-      return this.stats.average;
+      return parseFloat(this.stats.average).toFixed();
     },
     votes() {
       return this.stats.votes;
