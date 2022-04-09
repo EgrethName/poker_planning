@@ -211,9 +211,6 @@ export default {
         this.clearCardVotes();
       }
     },
-    completedVotes: {
-      deep: true,
-    }
   },
   created() {
     this.$store.dispatch('activate');
