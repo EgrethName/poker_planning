@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 import cloneDeep from 'lodash/cloneDeep';
 import EventBus from '@/modules/eventBus';
-import { xhr, baseSessionId } from '@/modules/xhr';
+import { xhr } from '@/modules/xhr';
 import socket from '@/modules/socketModule';
 
 Vue.use(Vuex)
@@ -22,7 +22,7 @@ export default new Vuex.Store({
       votes: {}
     },
     isVoteSet: false,
-    sessionId: baseSessionId,
+    sessionId: 'd2a7a9eaf2b',
     wsSessionId: socket.id,
     completedVotes: [],
     roomName: '',
