@@ -87,7 +87,8 @@ export default {
       return counter
     },
     countedMarksLen() {
-      const len = Object.keys(this.countedMarks).length;
+      const marksToCheck = Object.keys(this.countedMarks).filter((val) => val !== '?');
+      const len = Object.keys(marksToCheck).length;
       if (len === 1) {
         this.triggerConfetti();
       }
