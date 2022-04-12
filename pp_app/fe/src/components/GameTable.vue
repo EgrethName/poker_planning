@@ -107,7 +107,6 @@ export default {
   scoped
 >
 .game-field {
-  border: 0 solid #000;
   border-radius: 10px;
   box-sizing: border-box;
   padding: 15px;
@@ -120,12 +119,10 @@ export default {
 }
 
 .game-table {
-  border: 1px solid #000;
   border-radius: 10px;
   box-sizing: border-box;
   background-color: #E8EEF9;
   margin-top: 10px;
-  height: 80%;
   /* flex: 1; */
   display: flex;
   overflow-y: auto;

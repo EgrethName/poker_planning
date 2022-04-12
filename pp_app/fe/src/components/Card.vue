@@ -51,9 +51,11 @@ $card_padding: 20px 7px;
 $card-bgcolor: rgb(235, 235, 235);
 $card_margin: 5px;
 $card_round: 10px;
-$card-shadow: -2px -2px 5px 0px $point-light;
+//$card-shadow: -2px -2px 5px 0px $point-light;
+$card-shadow: 0 1px 4px 0 rgba($color: #000000, $alpha: 0.6);
 
 .card-item {
+  border: unset;
   margin: 5px;
   text-align: center;
   background-color: $card-bgcolor;
@@ -89,7 +91,7 @@ $card-shadow: -2px -2px 5px 0px $point-light;
     margin: 0px;
     font-family: 'Noto Sans KR', sans-serif;
     font-size: 30px;
-    color: $black;
+    color: #333333;
   }
 
   &:hover {

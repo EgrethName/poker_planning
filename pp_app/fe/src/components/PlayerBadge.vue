@@ -64,7 +64,7 @@ export default {
   scoped
 >
 
-$field-border: 2px solid #000;
+$field-border: 2px solid #555;
 $field-border-radius: 0;
 $field-box-sizing: border-box;
 $field-padding: 0.2em 2em;
@@ -82,20 +82,19 @@ $field-padding: 0.2em 2em;
   background-color: whitesmoke;
   border-radius: 5px;
   margin: 2px 4px;
-  border: $field-border;
   padding: 0.2em 0;
   width: 3rem;
   font-weight: 800;
   font-size: 17px;
+  box-shadow: 0 0 4px 0 rgba($color: #000000, $alpha: 0.4);
 }
 
 .player {
   -webkit-appearance: button;
   background-color: rgb(255, 219, 219);
-  border: 2px solid #000;
   border-radius: 5px;
   box-sizing: border-box;
-  color: rgb(0, 0, 0);
+  color: #333;
   cursor: pointer;
   float: left;
   font-weight: 700;
@@ -111,6 +110,7 @@ $field-padding: 0.2em 2em;
   transition: all .3s ease-in-out;
   user-select: none;
   width: 16.8125rem;
+  box-shadow: 0 0 4px 0 rgba($color: #000000, $alpha: 0.4);
 
   &__vote-pending {
     background-color: rgb(245, 184, 184);

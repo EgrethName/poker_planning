@@ -3,72 +3,87 @@
     <div class="row game-header">
       <h2>{{ roomName }}</h2>
     </div>
-    <div class="row game-main">
-      <div class="col-lg-2">
-      </div>
-      <div class="col-lg-4 card-box">
-        <div class="name-header">
-          <h3> You are logged as: {{ playerName }}</h3>
-        </div>
-        <b-overlay
-          id="overlay-background"
-          :show="!isVoteActive"
-          rounded="sm"
-          opacity="1"
-        >
-          <div class="card-holder">
-            <Card
-              ref="cards"
-              v-for="card in cardSet"
-              v-bind:key="card"
-              :value="card"
-              @voted="processVote"
+    <b-tabs class="game-tabs" content-class="mt-3 game-tabs__tab" justified>
+      <b-tab title="Game" active>
+        <div class="row game-main">
+          <div class="col-lg-1">
+          </div>
+          <div class="col-lg-4 card-box">
+            <div class="name-header">
+              <h3> You are logged as: {{ playerName }}</h3>
+            </div>
+            <b-overlay
+              id="overlay-background"
+              :show="!isVoteActive"
+              rounded="sm"
+              opacity="1"
+            >
+              <div class="card-holder">
+                <Card
+                  ref="cards"
+                  v-for="card in cardSet"
+                  v-bind:key="card"
+                  :value="card"
+                  @voted="processVote"
+                />
+              </div>
+              <template #overlay>
+                <div class="text-center">
+                  <b-icon icon="stopwatch" font-scale="3" animation="fade"></b-icon>
+                  <p id="cancel-label">Please, start a new vote</p>
+                </div>
+              </template>
+            </b-overlay>
+            <div class="invitation-link">
+              <InvitationPanel
+                :link="gameLink"
+              />
+            </div>
+          </div>
+          <div class="col-lg-1">
+          </div>
+          <div class="col-lg-5 game-table-container">
+            <GameTable
+              @voteCompleted="showStatsModalFromData"
             />
           </div>
-          <template #overlay>
-            <div class="text-center">
-              <b-icon icon="stopwatch" font-scale="3" animation="fade"></b-icon>
-              <p id="cancel-label">Please, start a new vote</p>
-            </div>
-          </template>
-        </b-overlay>
-        <div class="invitation-link">
-          <InvitationPanel
-            :link="gameLink"
+          <InputNameModal
+            v-model="submitNameSuccess"
+            @clicked="enterTheGame"
+            ref="modalComponent"
+          />
+          <CompletedVoteModal
+            ref="statsModal"
+            :stats="currentStats"
           />
         </div>
-      </div>
-      <div class="col-lg-6 game-table-container">
-        <GameTable
-          @voteCompleted="showStatsModalFromData"
-        />
-      </div>
-      <InputNameModal
-        v-model="submitNameSuccess"
-        @clicked="enterTheGame"
-        ref="modalComponent"
-      />
-      <CompletedVoteModal
-        ref="statsModal"
-        :stats="currentStats"
-      />
-    </div>
-    <div class="row completed-votes">
-        <div class="col-lg-4"></div>
-        <div class="col-lg-4 col-sm-12">
-          <p>Completed votes</p>
-          <div class="holder">
-            <CompletedVoteBadge
-              ref="completedVotes"
-              v-for="item in completedVotes"
-              v-bind:key="item.id"
-              :stats="item"
-              @clicked="showStatsModal"
-            />
+      </b-tab>
+      <b-tab title="Completed votes">
+        <div class="row completed-votes">
+          <div class="col-lg-4"></div>
+          <div class="col-lg-4 col-sm-12">
+            <div class="holder">
+              <template v-if="completedVotes.length > 0"
+              >
+                <CompletedVoteBadge
+                    ref="completedVotes"
+                    v-for="item in completedVotes"
+                    v-bind:key="item.id"
+                    :stats="item"
+                    @clicked="showStatsModal"
+                />
+              </template>
+              <div
+                v-else
+              >
+                <h3>No completed votes yet</h3>
+              </div>
+            </div>
           </div>
+          <div class="col-lg-4"></div>
         </div>
-        <div class="col-lg-4"></div>
-      </div>
+      </b-tab>
+    </b-tabs>
   </div>
 </template>
 
@@ -225,6 +240,13 @@ export default {
 }
 </script>
 
+<style>
+
+.game-tabs__tab {
+  flex: 1 1 auto;
+}
+
+</style>
 <style
   lang='scss'
   scoped
@@ -232,19 +254,32 @@ export default {
 
 .game-container {
   height: 100%;
-  /* overflow: auto; */
+  display: flex;
+  flex-flow: column;
+}
+
+.game-tabs {
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  padding-bottom: 40px;
 }
 
 .game-main {
-  height: 75%;
   overflow: auto;
+  flex: 1 1 auto;
 }
 
 .game-header {
-  height: 7em;
+  min-height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 0 1 auto;
+
+  h2 {
+    margin-bottom: unset;
+  }
 }
 
 .name-header {
@@ -257,7 +292,7 @@ export default {
 }
 
 .card-holder {
-  height: 450px;
+  height: 400px;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -266,7 +301,6 @@ export default {
 }
 
 .game-table-container {
-  height: 98%;
   margin-top: 5px;
   margin-bottom: 5px;
 }
@@ -290,6 +324,14 @@ export default {
 
 #cancel-label {
   font-size: 20px;
+}
+
+@media (max-width: 648px) {
+  .game-container {
+    height: unset;
+    display: flex;
+    flex-flow: column;
+  }
 }
 
 </style>

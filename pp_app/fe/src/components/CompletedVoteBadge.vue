@@ -38,10 +38,10 @@ export default {
 .completed-vote-badge {
   -webkit-appearance: button;
   background-color: #E8EEF9;
-  border: 2px solid #000;
+  border: unset;
   border-radius: 5px;
   box-sizing: border-box;
-  color: rgb(0, 0, 0);
+  color: #333;
   cursor: pointer;
   float: left;
   font-weight: 700;
@@ -57,6 +57,7 @@ export default {
   transition: all .3s ease-in-out;
   user-select: none;
   width: 100%;
+  box-shadow: 0 0 5px 0 rgba($color: #000000, $alpha: 0.4);
 
   &:hover {
     background-color: #BDD0F7;

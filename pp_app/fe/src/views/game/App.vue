@@ -1,12 +1,16 @@
 <template>
-  <div id="app">
-    <Header
-      tooltipText="Coming soon..."
-    />
-    <div class="wrapper container">
+  <div id="app" class="main-box">
+    <div class="main-box__header">
+      <Header
+        tooltipText="Coming soon..."
+      />
+    </div>
+    <div class="wrapper container main-box__content">
       <Game />
     </div>
-    <Footer />
+    <div class="main-box__footer">
+      <Footer />
+    </div>
   </div>
 </template>
 
@@ -32,9 +36,14 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #444;
   height: calc(var(--vh, 1vh)*100);
   overflow: hidden;
+}
+
+.main-box {
+  display: flex;
+  flex-direction: column;
 }
 
 #nav {
